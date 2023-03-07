@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/style.css"> 
 
-    <title>Блог</title>
+    <title>Сайт</title>
     <meta name="keywords" content="">
     <meta name="description" content=""> 
 </head>
@@ -20,17 +20,17 @@
             <div class="header-body__container">
                 <div class="header-body__left">
                     <div class="logo">
-                        <a href="#" class="logo__link">
-                            <img src="images/logo.svg" alt="Блог" class="logo__image">
-                            <div class="logo__title">Блог</div>
+                        <a href="#" class="logo__link"> 
+                            <img src="images/logo.svg" alt="Сайт" class="logo__image">
+                            <div class="logo__title">Сайт</div>
                         </a>
                     </div>
                 </div>
                 <div class="header-body__right">
                     <div class="feedback">
                         <div class="feedback__text">8 (812) 123-45-67</div>
-                        <div class="feedback__btn">
-                            <div class="btn btn--style-1" onclick="alert('Все операторы заняты')">
+                        <div class="feedback__button">
+                            <div class="button button--style-1" onclick="alert('Все операторы заняты')">
                                 Обратный звонок
                             </div>
                         </div>
@@ -63,19 +63,62 @@
     <!-- main -->
     <main class="main">
         <div class="main__container">
-            <div class="article">
-                Текст статьи
+            <div class="article-section">
+                <div class="article">
+                    <p>Текст статьи</p>
+                    <p>Текст статьи</p>
+                    <p>Текст статьи</p>
+                </div>
             </div>
 
-            <div id="comments" class="comments">
-
+            <div class="comments-section">
+                <div class="comments">
+                    Комментарии
+                </div>
             </div>
         </div>
     </main>
 
     <!-- footer -->
     <footer class="footer">
-        Подвал
+        <div class="footer__container">
+            <div class="footer__row">
+                <div class="footer__col-1">
+                    <div class="footer__col-1-title">ООО «Сайт»</div>
+                    <ul class="footer__col-list">
+                        <li>8 (812) 123-45-67</li>
+                        <li>info@example.com</li>
+                    </ul>
+                </div>
+                <div class="footer__col">
+                    <div class="footer__col-title">о компании</div>
+                    <ul class="footer__col-list">
+                        <li><a href="#">Наши магазины</a></li>
+                        <li><a href="#">Вакансии</a></li>
+                        <li><a href="#">Сертификаты</a></li>
+                        <li><a href="#">Отзывы</a></li>
+                    </ul>
+                </div>
+                <div class="footer__col">
+                    <div class="footer__col-title">покупателям</div>
+                    <ul class="footer__col-list">
+                        <li><a href="#">Каталог товаров</a></li>
+                        <li><a href="#">Как заказать?</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Корпоративным клиентам</a></li>
+                    </ul>
+                </div>
+                <div class="footer__col">
+                    <div class="footer__col-title">оплата и доставка</div>
+                    <ul class="footer__col-list">
+                        <li><a href="#">Способы оплаты</a></li>
+                        <li><a href="#">Время доставки</a></li>
+                        <li><a href="#">Гарантии и ремонт</a></li>
+                        <li><a href="#">Возврат и компенсация</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </footer>
 </div>
 </body>

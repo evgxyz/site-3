@@ -11,17 +11,20 @@ $font-family-1: Roboto, sans-serif;
 $color-1: #000000;
 $color-1a: #1B1A17;
 $color-2: #00137F;
+$color-3: #d0d0d0;
 
 $bg-color-0: #dddddd;
-$bg-color-1: #eeeeee;
+$bg-color-1: #f9f9f9;
 $bg-color-1a: #e0e0e0;
+
+$brd-color-1: #c0c0c0;
 
 // цвета меню
 
 
 // временная граница для отладки
 @mixin debug-border($color) { 
-    border: 1px solid $color;  
+    //border: 1px solid $color;  
 }
 
 body {
@@ -55,13 +58,25 @@ a {
     font-size: 1.8rem;
 }
 
+a {
+    color: $color-1;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    transition: color 0.5s, background-color 0.5s, text-decoration-color 0.5s;
+    
+    &:hover {
+        color: $color-2;
+        text-decoration-color: $color-2;
+        transition: color 0.5s, background-color 0.5s, text-decoration-color 0.5s;
+    }
+}
+
 // обертка флекс-колонка для опускания футера к низу страницы в случае маленькой высоты контента
 .page-wrapper {
     display: flex;
     min-height: 100vh;
     min-width: $content-min-width;
     flex-direction: column;
-    align-items: stretch;
 }
 
 // шапка
@@ -92,7 +107,8 @@ a {
         max-width: $content-max-width;
         padding: 0 $content-indent;
         background-color: $bg-color-1;
-        border-radius: 20px;
+        border: 1px solid $brd-color-1;
+        border-radius: 20px 20px 0 0;
         justify-content: space-between;
         flex-wrap: wrap; 
         column-gap: 16px; 
@@ -121,7 +137,12 @@ a {
     &__link {
         display: flex;
         align-items: center;
+        color: $color-2;
         text-decoration: none;
+
+        &:hover { 
+            text-decoration: none; 
+        }
     }
 
     &__image { 
@@ -144,7 +165,6 @@ a {
 
 // основное меню в шапке
 .main-menu {
-    padding: 10px 0;
     text-align: center;
     font-size: 1rem;
     background-color: $bg-color-0;
@@ -153,9 +173,11 @@ a {
         display: flex;
         margin: 0 auto; 
         max-width: $content-max-width;
-        padding: 0 $content-indent;
+        padding: 8px $content-indent;
         background-color: $bg-color-1;
-        border-radius: 20px;
+        border-radius: 0 0 20px 20px;
+        border: 1px solid $brd-color-1;
+        border-top-width: 0;
         justify-content: center;
         flex-wrap: wrap; 
         column-gap: 8px;
@@ -166,15 +188,150 @@ a {
         display: inline-block;
         padding: 8px 12px;
         color: $color-1;
-        text-decoration: underline;
-        text-decoration-color: transparent;
-        transition: color 0.5s, background-color 0.5s, text-decoration-color 0.5s;
         
         &:hover {
             color: $color-2;
             background-color: $bg-color-1a;
-            text-decoration-color: $color-2;
-            transition: color 0.5s, background-color 0.5s, text-decoration-color 0.5s;
+            text-decoration-color: $color-2; 
         }
     }
 }
+
+// main
+.main {
+    display: flex;
+    margin-top: 10px;
+    background-color: $bg-color-0;
+
+    &__container {
+        margin: 0 auto; 
+        max-width: $content-max-width;
+        flex-grow: 1;
+        background-color: $bg-color-1;
+        border: 1px solid $brd-color-1;
+        border-radius: 20px;
+        @include debug-border(blue);
+    } 
+}
+
+.article-section {
+    @include debug-border(green);
+}
+
+.article {
+    margin: 16px $content-indent;
+}
+
+.comments-section {
+    margin-top: 16px;
+    border-top: 1px solid $brd-color-1;
+}
+
+.comments {
+    margin: 16px $content-indent;
+}
+
+// footer
+.footer {
+    display: flex;
+    margin-top: 10px;
+    background-color: $bg-color-0;
+
+    &__container {
+        margin: 0 auto; 
+        max-width: $content-max-width;
+        flex-grow: 1;
+        background-color: $bg-color-1;
+        border: 1px solid $brd-color-1;
+        border-radius: 20px;
+        @include debug-border(blue);
+    } 
+
+    &__row {
+        display: flex;
+        margin: 1em $content-indent; 
+        justify-content: space-between;
+        flex-wrap: wrap; 
+        column-gap: 1em;
+        row-gap: 1em;
+        max-width: $content-max-width;
+        font-size: 0.9rem;
+        @include debug-border(red);
+    }
+
+    &__col-1 {
+        flex-basis: 15%;
+        flex-grow: 1;
+        @include debug-border(orange);
+    }
+
+    &__col-1-title {
+        margin-bottom: 1.5rem;
+    }
+
+    &__col {
+        flex-basis: 15%;
+        flex-grow: 1;
+        @include debug-border(orange);
+    }
+
+    &__col-title {
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+    }
+
+    &__col-list {
+        padding-left: 0;
+        margin: 0;
+        list-style-type: none;
+        @include debug-border(red);
+
+        & > li {
+            margin: 0.8em 0;
+            &:first-child { margin-top: 0; }
+            &:last-child { margin-bottom: 0; } 
+        }
+    }
+}
+
+// кнопки
+.button {  
+    display: inline-block;
+    padding: 0.6em 1em;
+    border-radius: 1.2em;
+    line-height: 1em;
+    text-align: center; 
+    
+    &:hover { cursor: pointer; }
+
+    &--style-1 {
+        color: $color-1;
+        background-color: $bg-color-1;
+        border: 2px solid $color-2;
+        transition: color 0.5s, background-color 0.5s; 
+
+        &:hover {
+            color: $color-2;
+            background-color: $bg-color-1a;
+            transition: color 0.5s, background-color 0.5s; 
+        }
+    }
+}
+
+// поле ввода
+/* .input {  
+    display: inline-block;
+    padding: 0.6em 1em;
+    border-radius: 1.2em;
+    line-height: 1em;
+    text-align: center; 
+
+    &:focus::placeholder { opacity: 0;}
+
+    &--style-1 {
+        color: $color-0;
+        background-color: $bg-color-0;
+        border: 2px solid $color-2;
+        outline-color: $color-2;
+    }
+}  */

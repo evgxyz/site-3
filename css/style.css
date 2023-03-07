@@ -30,27 +30,35 @@ a:hover {
   font-size: 1.8rem;
 }
 
+a {
+  color: #000000;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: color 0.5s, background-color 0.5s, text-decoration-color 0.5s;
+}
+a:hover {
+  color: #00137F;
+  text-decoration-color: #00137F;
+  transition: color 0.5s, background-color 0.5s, text-decoration-color 0.5s;
+}
+
 .page-wrapper {
   display: flex;
   min-height: 100vh;
   min-width: 256px;
   flex-direction: column;
-  align-items: stretch;
 }
 
 .header {
   justify-self: flex-start;
-  border: 1px solid red;
 }
 
 .main {
   flex-grow: 1;
-  border: 1px solid green;
 }
 
 .footer {
   justify-self: flex-end;
-  border: 1px solid blue;
 }
 
 .header-body {
@@ -62,22 +70,20 @@ a:hover {
   margin: 0 auto;
   max-width: 1024px;
   padding: 0 16px;
-  background-color: #eeeeee;
-  border-radius: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #c0c0c0;
+  border-radius: 20px 20px 0 0;
   justify-content: space-between;
   flex-wrap: wrap;
   column-gap: 16px;
-  border: 1px solid blue;
 }
 .header-body__left {
   display: flex;
   align-items: center;
-  border: 1px solid blueviolet;
 }
 .header-body__right {
   display: flex;
   align-items: center;
-  border: 1px solid blueviolet;
 }
 
 .logo {
@@ -89,6 +95,10 @@ a:hover {
 .logo__link {
   display: flex;
   align-items: center;
+  color: #00137F;
+  text-decoration: none;
+}
+.logo__link:hover {
   text-decoration: none;
 }
 .logo__image {
@@ -109,7 +119,6 @@ a:hover {
 }
 
 .main-menu {
-  padding: 10px 0;
   text-align: center;
   font-size: 1rem;
   background-color: #dddddd;
@@ -118,25 +127,141 @@ a:hover {
   display: flex;
   margin: 0 auto;
   max-width: 1024px;
-  padding: 0 16px;
-  background-color: #eeeeee;
-  border-radius: 20px;
+  padding: 8px 16px;
+  background-color: #f9f9f9;
+  border-radius: 0 0 20px 20px;
+  border: 1px solid #c0c0c0;
+  border-top-width: 0;
   justify-content: center;
   flex-wrap: wrap;
   column-gap: 8px;
-  border: 1px solid red;
 }
 .main-menu__item {
   display: inline-block;
   padding: 8px 12px;
   color: #000000;
-  text-decoration: underline;
-  text-decoration-color: transparent;
-  transition: color 0.5s, background-color 0.5s, text-decoration-color 0.5s;
 }
 .main-menu__item:hover {
   color: #00137F;
   background-color: #e0e0e0;
   text-decoration-color: #00137F;
-  transition: color 0.5s, background-color 0.5s, text-decoration-color 0.5s;
 }
+
+.main {
+  display: flex;
+  margin-top: 10px;
+  background-color: #dddddd;
+}
+.main__container {
+  margin: 0 auto;
+  max-width: 1024px;
+  flex-grow: 1;
+  background-color: #f9f9f9;
+  border: 1px solid #c0c0c0;
+  border-radius: 20px;
+}
+
+.article {
+  margin: 16px 16px;
+}
+
+.comments-section {
+  margin-top: 16px;
+  border-top: 1px solid #c0c0c0;
+}
+
+.comments {
+  margin: 16px 16px;
+}
+
+.footer {
+  display: flex;
+  margin-top: 10px;
+  background-color: #dddddd;
+}
+.footer__container {
+  margin: 0 auto;
+  max-width: 1024px;
+  flex-grow: 1;
+  background-color: #f9f9f9;
+  border: 1px solid #c0c0c0;
+  border-radius: 20px;
+}
+.footer__row {
+  display: flex;
+  margin: 1em 16px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  column-gap: 1em;
+  row-gap: 1em;
+  max-width: 1024px;
+  font-size: 0.9rem;
+}
+.footer__col-1 {
+  flex-basis: 15%;
+  flex-grow: 1;
+}
+.footer__col-1-title {
+  margin-bottom: 1.5rem;
+}
+.footer__col {
+  flex-basis: 15%;
+  flex-grow: 1;
+}
+.footer__col-title {
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+}
+.footer__col-list {
+  padding-left: 0;
+  margin: 0;
+  list-style-type: none;
+}
+.footer__col-list > li {
+  margin: 0.8em 0;
+}
+.footer__col-list > li:first-child {
+  margin-top: 0;
+}
+.footer__col-list > li:last-child {
+  margin-bottom: 0;
+}
+
+.button {
+  display: inline-block;
+  padding: 0.6em 1em;
+  border-radius: 1.2em;
+  line-height: 1em;
+  text-align: center;
+}
+.button:hover {
+  cursor: pointer;
+}
+.button--style-1 {
+  color: #000000;
+  background-color: #f9f9f9;
+  border: 2px solid #00137F;
+  transition: color 0.5s, background-color 0.5s;
+}
+.button--style-1:hover {
+  color: #00137F;
+  background-color: #e0e0e0;
+  transition: color 0.5s, background-color 0.5s;
+}
+
+/* .input {  
+    display: inline-block;
+    padding: 0.6em 1em;
+    border-radius: 1.2em;
+    line-height: 1em;
+    text-align: center; 
+
+    &:focus::placeholder { opacity: 0;}
+
+    &--style-1 {
+        color: $color-0;
+        background-color: $bg-color-0;
+        border: 2px solid $color-2;
+        outline-color: $color-2;
+    }
+}  */
