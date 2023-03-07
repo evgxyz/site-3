@@ -1,0 +1,142 @@
+body {
+  font-size: 1rem;
+  font-family: Roboto, sans-serif;
+  color: #000000;
+  margin: 0;
+  padding: 10px;
+  background-color: #dddddd;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  transition: color 0.5s;
+}
+a:hover {
+  text-decoration: underline;
+  transition: color 0.5s;
+}
+
+.h1 {
+  font-family: Roboto, sans-serif;
+  font-size: 2.7em;
+}
+
+.h2 {
+  font-family: Roboto, sans-serif;
+  font-size: 1.8rem;
+}
+
+.page-wrapper {
+  display: flex;
+  min-height: 100vh;
+  min-width: 256px;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.header {
+  justify-self: flex-start;
+  border: 1px solid red;
+}
+
+.main {
+  flex-grow: 1;
+  border: 1px solid green;
+}
+
+.footer {
+  justify-self: flex-end;
+  border: 1px solid blue;
+}
+
+.header-body {
+  text-align: center;
+  background-color: #dddddd;
+}
+.header-body__container {
+  display: flex;
+  margin: 0 auto;
+  max-width: 1024px;
+  padding: 0 16px;
+  background-color: #eeeeee;
+  border-radius: 20px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  column-gap: 16px;
+  border: 1px solid blue;
+}
+.header-body__left {
+  display: flex;
+  align-items: center;
+  border: 1px solid blueviolet;
+}
+.header-body__right {
+  display: flex;
+  align-items: center;
+  border: 1px solid blueviolet;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  padding: 16px 0;
+  font-size: 1rem;
+}
+.logo__link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+.logo__image {
+  height: 5em;
+}
+.logo__title {
+  margin-left: 16px;
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.feedback {
+  display: flex;
+  align-items: center;
+}
+.feedback__button {
+  margin-left: 16px;
+}
+
+.main-menu {
+  padding: 10px 0;
+  text-align: center;
+  font-size: 1rem;
+  background-color: #dddddd;
+}
+.main-menu__container {
+  display: flex;
+  margin: 0 auto;
+  max-width: 1024px;
+  padding: 0 16px;
+  background-color: #eeeeee;
+  border-radius: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  column-gap: 8px;
+  border: 1px solid red;
+}
+.main-menu__item {
+  display: inline-block;
+  padding: 8px 12px;
+  color: #000000;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: color 0.5s, background-color 0.5s, text-decoration-color 0.5s;
+}
+.main-menu__item:hover {
+  color: #00137F;
+  background-color: #e0e0e0;
+  text-decoration-color: #00137F;
+  transition: color 0.5s, background-color 0.5s, text-decoration-color 0.5s;
+}

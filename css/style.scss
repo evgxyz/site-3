@@ -1,0 +1,180 @@
+
+// ширина контента 
+$content-max-width: 1024px;
+$content-min-width: 256px;
+$content-indent: 16px; 
+
+// шрифт
+$font-family-1: Roboto, sans-serif; 
+
+// цвета основные
+$color-1: #000000;
+$color-1a: #1B1A17;
+$color-2: #00137F;
+
+$bg-color-0: #dddddd;
+$bg-color-1: #eeeeee;
+$bg-color-1a: #e0e0e0;
+
+// цвета меню
+
+
+// временная граница для отладки
+@mixin debug-border($color) { 
+    border: 1px solid $color;  
+}
+
+body {
+    font-size: 1rem;
+    font-family: $font-family-1;
+    color: $color-1;
+    margin: 0;
+    padding: 10px;
+    background-color: $bg-color-0;
+}
+
+* { box-sizing: border-box; }
+
+a { 
+    text-decoration: none;
+    transition: color 0.5s;
+
+    &:hover { 
+        text-decoration: underline;
+        transition: color 0.5s
+    }
+}
+
+.h1 {
+    font-family: $font-family-1;
+    font-size: 2.7em;
+}
+
+.h2 {
+    font-family: $font-family-1; 
+    font-size: 1.8rem;
+}
+
+// обертка флекс-колонка для опускания футера к низу страницы в случае маленькой высоты контента
+.page-wrapper {
+    display: flex;
+    min-height: 100vh;
+    min-width: $content-min-width;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+// шапка
+.header {
+    justify-self: flex-start;
+    @include debug-border(red);  
+}
+
+// основное содержание страницы
+.main {
+    flex-grow: 1;
+    @include debug-border(green);
+}
+
+// подвал
+.footer {
+    justify-self: flex-end;
+    @include debug-border(blue); 
+}
+
+.header-body {
+    text-align: center;
+    background-color: $bg-color-0;
+
+    &__container {
+        display: flex;
+        margin: 0 auto; 
+        max-width: $content-max-width;
+        padding: 0 $content-indent;
+        background-color: $bg-color-1;
+        border-radius: 20px;
+        justify-content: space-between;
+        flex-wrap: wrap; 
+        column-gap: 16px; 
+        @include debug-border(blue);
+    }
+    
+    &__left {
+        display: flex;
+        align-items: center;
+        @include debug-border(blueviolet);
+    }
+
+    &__right {
+        display: flex;
+        align-items: center;
+        @include debug-border(blueviolet);
+    }
+} 
+ 
+.logo {
+    display: flex;
+    align-items: center;
+    padding: 16px 0;
+    font-size: 1rem;
+
+    &__link {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+    }
+
+    &__image { 
+        height: 5em;  
+    }
+
+    &__title {
+        margin-left: 16px;
+        font-size: 2em;
+        font-weight: bold;
+    }
+}
+
+.feedback {
+    display: flex;
+    align-items: center;
+
+    &__button { margin-left: 16px; }
+}
+
+// основное меню в шапке
+.main-menu {
+    padding: 10px 0;
+    text-align: center;
+    font-size: 1rem;
+    background-color: $bg-color-0;
+
+    &__container {
+        display: flex;
+        margin: 0 auto; 
+        max-width: $content-max-width;
+        padding: 0 $content-indent;
+        background-color: $bg-color-1;
+        border-radius: 20px;
+        justify-content: center;
+        flex-wrap: wrap; 
+        column-gap: 8px;
+        @include debug-border(red);
+    }
+
+    &__item {
+        display: inline-block;
+        padding: 8px 12px;
+        color: $color-1;
+        text-decoration: underline;
+        text-decoration-color: transparent;
+        transition: color 0.5s, background-color 0.5s, text-decoration-color 0.5s;
+        
+        &:hover {
+            color: $color-2;
+            background-color: $bg-color-1a;
+            text-decoration-color: $color-2;
+            transition: color 0.5s, background-color 0.5s, text-decoration-color 0.5s;
+        }
+    }
+}
