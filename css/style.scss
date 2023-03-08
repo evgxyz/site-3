@@ -325,7 +325,24 @@ a {
     }
 
     &__menu {
+        display: flex;
         margin-top: 8px;
+        align-items: center;
+        column-gap: 10px;
+    }
+
+    &__menu-item {
+        width: 20px;
+        height: 20px;
+        background-position: center center;
+        background-size: contain;
+        background-repeat: no-repeat;
+
+        &:hover { cursor: pointer; }
+
+        &--like { background-image: url('../images/icon-heart.svg'); }
+        &--like-liked { background-image: url('../images/icon-heart-red.svg'); }
+        &--del { background-image: url('../images/icon-trash.svg'); }
     }
 }
 

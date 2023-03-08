@@ -245,7 +245,29 @@ a:hover {
   color: gray;
 }
 .comment__menu {
+  display: flex;
   margin-top: 8px;
+  align-items: center;
+  column-gap: 10px;
+}
+.comment__menu-item {
+  width: 20px;
+  height: 20px;
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.comment__menu-item:hover {
+  cursor: pointer;
+}
+.comment__menu-item--like {
+  background-image: url("../images/icon-heart.svg");
+}
+.comment__menu-item--like-liked {
+  background-image: url("../images/icon-heart-red.svg");
+}
+.comment__menu-item--del {
+  background-image: url("../images/icon-trash.svg");
 }
 
 .input-text {

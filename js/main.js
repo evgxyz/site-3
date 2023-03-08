@@ -1,6 +1,6 @@
 'use strict'
 
-/******************************/
+//-----------------------------
 
 document.addEventListener('DOMContentLoaded', DOMReady);
 
@@ -9,20 +9,21 @@ function DOMReady() {
     initComments();
 }
 
-/******************************/
+//-----------------------------
 
 function initComments() {
     let commentForm = document.getElementById('comment-form');
-    
     commentForm.addEventListener('submit', commentFormSubmit);
-
     commentForm.addEventListener('focusin', commentFormFocusin);
+
+    let commentsBox = document.getElementById('comments-box');
+    commentsBox.addEventListener('onclick', commentsBoxClick);
 
     printComments();
 }
 
-/******************************/
-
+//-----------------------------
+// отправка формы
 function commentFormSubmit(event) {
     console.log('submit');
     event.preventDefault();
@@ -36,6 +37,7 @@ function commentFormSubmit(event) {
             name: name,
             text: text,
             date: date ?? (new Date()).getTime(),
+            liked: 0
         };
         addComment(comment);
     }
@@ -44,7 +46,14 @@ function commentFormSubmit(event) {
     }
 }
 
-/******************************/
+//-----------------------------
+// перехватываем лайки и удаление сообщений
+function commentsBoxClick(event) {
+    let commentsBox = event.currentTarget;
+    let commentElem = event.Target;
+}
+
+//-----------------------------
 
 function validCommentForm(form) {
     let valid = true;
@@ -79,7 +88,7 @@ function validCommentForm(form) {
     };
 }
 
-/******************************/
+//-----------------------------
 
 function commentFormFocusin(event) {
     //console.log('focusin');
@@ -92,7 +101,7 @@ function commentFormFocusin(event) {
     form.querySelector('[name="text-msgerror"]').innerHTML = '';
 }
 
-/******************************/
+//-----------------------------
 
 function addComment(comment) {
     // add comment to storage
@@ -105,12 +114,13 @@ function addComment(comment) {
     commentsBox.insertAdjacentHTML('afterbegin', commentToHTML(comment));
 }
 
-/******************************/
+//-----------------------------
 
 function deleteComment(commentId) {
     // delete comment from storage
     let comments = JSON.parse(localStorage.getItem('comments')) ?? [];
-    comments.unshift(comment);
+    let index = comments.findIndex(x => (x.id == commentId));
+    comments.splice(index, 1);
     localStorage.setItem('comments', JSON.stringify(comments));
 
     // delete comment from page
@@ -118,7 +128,7 @@ function deleteComment(commentId) {
     commentsBox.insertAdjacentHTML('afterbegin', commentToHTML(comment));
 }
 
-/******************************/
+//-----------------------------
 
 function printComments() {
     let comments = JSON.parse(localStorage.getItem('comments')) ?? [];
@@ -131,20 +141,23 @@ function printComments() {
     document.getElementById('comments-box').innerHTML = html;
 }
 
-/******************************/
+//-----------------------------
 
 function commentToHTML(comment) {
     let html = '';
-    html += `<div class="comment">`;
+    html += `<div id="comment-${comment.id}" class="comment">`;
     html += `<div class="comment__name">${escapeHTML(comment.name)}</div>`;
     html += `<div class="comment__text">${escapeHTML(comment.text)}</div>`;
     html += `<div class="comment__date">${escapeHTML(comment.date)}</div>`;
-    html += `<div class="comment__menu">like</div>`;
+    html += `<div class="comment__menu">`;
+    html += `<div class="comment__menu-item comment__menu-item--del"></div>`;
+    html += `<div class="comment__menu-item comment__menu-item--like${(comment.liked ? '-liked' : '')}"></div>`;
+    html += `</div>`;
     html += `</div>`;
     return html;
 }
 
-/******************************/
+//-----------------------------
 
 function parseDate(str) {
     str = str.trim();
@@ -180,7 +193,7 @@ function parseDate(str) {
     return null;
 }
 
-/******************************/
+//-----------------------------
 
 function escapeHTML(str) {
     return (
@@ -192,3 +205,5 @@ function escapeHTML(str) {
         .replace(/\>/g, '&gt')
     );
 }
+
+//-----------------------------
