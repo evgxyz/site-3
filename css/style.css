@@ -211,16 +211,16 @@ a:hover {
   margin: 16px 16px;
 }
 
-.comments-form {
+.comment-form {
   display: block;
 }
-.comments-form__text {
+.comment-form__text {
   margin-top: 8px;
 }
-.comments-form__date {
+.comment-form__date {
   margin-top: 8px;
 }
-.comments-form__submit {
+.comment-form__submit {
   margin-top: 8px;
 }
 
@@ -230,7 +230,7 @@ a:hover {
 
 .comment {
   margin: 16px 0;
-  padding: 8px;
+  padding: 10px;
   border: 1px solid #c0c0c0;
 }
 .comment__name {

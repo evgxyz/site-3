@@ -12,28 +12,30 @@ function DOMReady() {
 /******************************/
 
 function initComments() {
-    let commentsForm = document.getElementById('comments-form');
+    let commentForm = document.getElementById('comment-form');
     
-    commentsForm.addEventListener('submit', commentsFormSubmit);
+    commentForm.addEventListener('submit', commentFormSubmit);
 
-    commentsForm.addEventListener('focusin', commentsFormFocusin);
+    commentForm.addEventListener('focusin', commentFormFocusin);
 
     printComments();
 }
 
 /******************************/
 
-function commentsFormSubmit(event) {
+function commentFormSubmit(event) {
     console.log('submit');
     event.preventDefault();
 
     let form = event.currentTarget;
+
+    let {valid, name, text, date} = validCommentForm(form);
     
-    if (validCommentsForm(form)) {
+    if (valid) {
         let comment = {
-            name: form.name.value,
-            text: form.text.value,
-            date: (form.date.value != '') ? form.date.value : (new Date()).getTime(),
+            name: name,
+            text: text,
+            date: date ?? (new Date()).getTime(),
         };
         addComment(comment);
     }
@@ -44,7 +46,7 @@ function commentsFormSubmit(event) {
 
 /******************************/
 
-function validCommentsForm(form) {
+function validCommentForm(form) {
     let valid = true;
 
     if (form.name.value == '') {
@@ -59,6 +61,7 @@ function validCommentsForm(form) {
         form.querySelector('[name="text-msgerror"]').innerHTML = 'Текст пустой';
     }
 
+    let date = null;
     if (form.date.value != '') {
         let date = parseDate(form.date.value);
         if (!date) {
@@ -68,12 +71,17 @@ function validCommentsForm(form) {
         }
     }
 
-    return valid;
+    return { 
+        'valid': valid, 
+        'name': form.name.value,
+        'text': form.text.value,
+        'date': date,
+    };
 }
 
 /******************************/
 
-function commentsFormFocusin(event) {
+function commentFormFocusin(event) {
     //console.log('focusin');
     let form = event.currentTarget;
 
@@ -87,14 +95,27 @@ function commentsFormFocusin(event) {
 /******************************/
 
 function addComment(comment) {
-    // add to storage
+    // add comment to storage
     let comments = JSON.parse(localStorage.getItem('comments')) ?? [];
     comments.unshift(comment);
     localStorage.setItem('comments', JSON.stringify(comments));
 
-    //add to page
-    printComments();
-    //let commentsBox = document.getElementById('comments-box');
+    // add comment to page
+    let commentsBox = document.getElementById('comments-box');
+    commentsBox.insertAdjacentHTML('afterbegin', commentToHTML(comment));
+}
+
+/******************************/
+
+function deleteComment(commentId) {
+    // delete comment from storage
+    let comments = JSON.parse(localStorage.getItem('comments')) ?? [];
+    comments.unshift(comment);
+    localStorage.setItem('comments', JSON.stringify(comments));
+
+    // delete comment from page
+    let commentsBox = document.getElementById('comments-box');
+    commentsBox.insertAdjacentHTML('afterbegin', commentToHTML(comment));
 }
 
 /******************************/
@@ -104,15 +125,23 @@ function printComments() {
 
     let html = '';
     for (let comment of comments) {
-        html += `<div class="comment">`;
-        html += `<div class="comment__name">${escapeHTML(comment.name)}</div>`;
-        html += `<div class="comment__text">${escapeHTML(comment.text)}</div>`;
-        html += `<div class="comment__date">${escapeHTML(comment.date)}</div>`;
-        html += `<div class="comment__menu">like</div>`;
-        html += `</div>`;
+        html += commentToHTML(comment);
     }
 
     document.getElementById('comments-box').innerHTML = html;
+}
+
+/******************************/
+
+function commentToHTML(comment) {
+    let html = '';
+    html += `<div class="comment">`;
+    html += `<div class="comment__name">${escapeHTML(comment.name)}</div>`;
+    html += `<div class="comment__text">${escapeHTML(comment.text)}</div>`;
+    html += `<div class="comment__date">${escapeHTML(comment.date)}</div>`;
+    html += `<div class="comment__menu">like</div>`;
+    html += `</div>`;
+    return html;
 }
 
 /******************************/

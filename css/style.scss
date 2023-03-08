@@ -10,7 +10,7 @@ $font-family-1: Roboto, sans-serif;
 // цвета основные
 $color-1: #000000;
 $color-2: #00137F;
-$color-3: #d0d0d0;
+$color-3: gray;
 
 $bg-color-0: #dddddd;
 $bg-color-1: #f9f9f9;
@@ -284,7 +284,7 @@ a {
     margin: 16px $content-indent; 
 }
 
-.comments-form {
+.comment-form {
     display: block;
 
     &__text {
@@ -292,7 +292,7 @@ a {
     }
 
     &__date {
-        margin-top: 8px;
+        margin-top: 8px; 
     }
 
     &__submit {
@@ -307,7 +307,7 @@ a {
 
 .comment {
     margin: 16px 0;
-    padding: 8px;
+    padding: 10px;
     border: 1px solid $brd-color-1;
 
     &__name {
@@ -321,7 +321,7 @@ a {
     &__date {
         margin-top: 8px;
         font-size: 0.9em;
-        color: gray;
+        color: $color-3;
     }
 
     &__menu {
