@@ -207,7 +207,7 @@ a:hover {
   border-top: 1px solid #c0c0c0;
 }
 
-.comments {
+.comments-block {
   margin: 16px 16px;
 }
 
@@ -217,7 +217,34 @@ a:hover {
 .comments-form__text {
   margin-top: 8px;
 }
+.comments-form__date {
+  margin-top: 8px;
+}
 .comments-form__submit {
+  margin-top: 8px;
+}
+
+.comments-box {
+  margin-top: 16px;
+}
+
+.comment {
+  margin: 16px 0;
+  padding: 8px;
+  border: 1px solid #c0c0c0;
+}
+.comment__name {
+  font-weight: bold;
+}
+.comment__text {
+  margin-top: 8px;
+}
+.comment__date {
+  margin-top: 8px;
+  font-size: 0.9em;
+  color: gray;
+}
+.comment__menu {
   margin-top: 8px;
 }
 
@@ -247,6 +274,7 @@ a:hover {
 .textarea {
   display: block;
   width: 100%;
+  min-height: 2.2rem;
   font-family: Roboto, sans-serif;
   font-size: 1rem;
   padding: 0.5em;

@@ -1,11 +1,15 @@
 'use strict'
 
+/******************************/
+
 document.addEventListener('DOMContentLoaded', DOMReady);
 
 function DOMReady() {
     console.log('DOM готов');
     initComments();
 }
+
+/******************************/
 
 function initComments() {
     let commentsForm = document.getElementById('comments-form');
@@ -14,8 +18,10 @@ function initComments() {
 
     commentsForm.addEventListener('focusin', commentsFormFocusin);
 
-    outComments();
+    printComments();
 }
+
+/******************************/
 
 function commentsFormSubmit(event) {
     console.log('submit');
@@ -25,9 +31,9 @@ function commentsFormSubmit(event) {
     
     if (validCommentsForm(form)) {
         let comment = {
-            date: (new Date()).getTime(),
             name: form.name.value,
-            text: form.text.value
+            text: form.text.value,
+            date: (form.date.value != '') ? form.date.value : (new Date()).getTime(),
         };
         addComment(comment);
     }
@@ -35,6 +41,8 @@ function commentsFormSubmit(event) {
         event.stopPropagation();
     }
 }
+
+/******************************/
 
 function validCommentsForm(form) {
     let valid = true;
@@ -51,11 +59,22 @@ function validCommentsForm(form) {
         form.querySelector('[name="text-msgerror"]').innerHTML = 'Текст пустой';
     }
 
+    if (form.date.value != '') {
+        let date = parseDate(form.date.value);
+        if (!date) {
+            valid = false;
+            form.date.classList.add('input-text--error');
+            form.querySelector('[name="date-msgerror"]').innerHTML = 'Дата в неправильном формате';
+        }
+    }
+
     return valid;
 }
 
+/******************************/
+
 function commentsFormFocusin(event) {
-    console.log('focusin');
+    //console.log('focusin');
     let form = event.currentTarget;
 
     form.name.classList.remove('input-text--error');
@@ -65,33 +84,82 @@ function commentsFormFocusin(event) {
     form.querySelector('[name="text-msgerror"]').innerHTML = '';
 }
 
+/******************************/
+
 function addComment(comment) {
-    console.log(comment);
-
+    // add to storage
     let comments = JSON.parse(localStorage.getItem('comments')) ?? [];
-
-    comments.push(comment);
-
+    comments.unshift(comment);
     localStorage.setItem('comments', JSON.stringify(comments));
 
-    let comments_str = localStorage.getItem('comments');
-
-    console.log(comments_str);
-
-    outComments();
+    //add to page
+    printComments();
+    //let commentsBox = document.getElementById('comments-box');
 }
 
-function outComments() {
-    let commentsList = document.getElementById('comments-list');
+/******************************/
 
+function printComments() {
     let comments = JSON.parse(localStorage.getItem('comments')) ?? [];
 
     let html = '';
     for (let comment of comments) {
-        html += `<div>${comment.name}</div>`;
-        html += `<div>${comment.text}</div>`;
-        html += `<hr>`;
+        html += `<div class="comment">`;
+        html += `<div class="comment__name">${escapeHTML(comment.name)}</div>`;
+        html += `<div class="comment__text">${escapeHTML(comment.text)}</div>`;
+        html += `<div class="comment__date">${escapeHTML(comment.date)}</div>`;
+        html += `<div class="comment__menu">like</div>`;
+        html += `</div>`;
     }
 
-    commentsList.innerHTML = html;
+    document.getElementById('comments-box').innerHTML = html;
+}
+
+/******************************/
+
+function parseDate(str) {
+    str = str.trim();
+    
+    let matches;
+
+    matches = str.match(/^(\d{2})[\.\-\s]+(\d{2})[\.\-\s]+(\d{4})$/);
+    if (matches) {
+        let d, m, y; 
+        d = +matches[1];
+        m = +matches[2];
+        y = +matches[3];
+
+        let date = new Date(y, m - 1, d);
+        if (date.getFullYear() == y && date.getMonth() + 1 == m && date.getDate() == d) {
+            return date;
+        }
+    }
+
+    matches = str.match(/^(\d{4})[\.\-\s]+(\d{2})[\.\-\s]+(\d{2})$/);
+    if (matches) {
+        let d, m, y; 
+        y = +matches[1];
+        m = +matches[2];
+        d = +matches[3];
+
+        let date = new Date(y, m - 1, d);
+        if (date.getFullYear() == y && date.getMonth() + 1 == m && date.getDate() == d) {
+            return date;
+        }
+    }
+
+    return null;
+}
+
+/******************************/
+
+function escapeHTML(str) {
+    return (
+        String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;')
+        .replace(/\</g, '&lt;')
+        .replace(/\>/g, '&gt')
+    );
 }

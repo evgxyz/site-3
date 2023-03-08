@@ -66,21 +66,25 @@
             </div>
 
             <div class="comments-section">
-                <div class="comments">
+                <div class="comments-block">
                     <form id="comments-form" action="#" class="comments-form">
                         <div class="comments-form__name">
                             <input type="text" name="name" class="input-text" placeholder="Имя">
                             <div name="name-msgerror" class="input-msgerror"></div>
                         </div>
                         <div class="comments-form__text">
-                            <textarea name="text" rows="10" class="textarea" placeholder="Текст"></textarea>
+                            <textarea name="text" rows="5" class="textarea" placeholder="Текст"></textarea>
                             <div name="text-msgerror" class="input-msgerror"></div>
+                        </div>
+                        <div class="comments-form__date">
+                            <input type="text" name="date" class="input-text" placeholder="Дата (ДД.ММ.ГГГГ)">
+                            <div name="date-msgerror" class="input-msgerror"></div>
                         </div>
                         <div class="comments-form__submit">
                             <button type="submit" class="button">Отправить</button>
                         </div>
                     </form>
-                    <div id="comments-list" class="comments-list"></div>
+                    <div id="comments-box" class="comments-box"></div>
                 </div>
             </div>
         </div>

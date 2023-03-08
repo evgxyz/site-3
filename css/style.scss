@@ -275,14 +275,13 @@ a {
 }
 
 // блок комментарии
-
 .comments-section {
     margin-top: 16px;
     border-top: 1px solid $brd-color-1;
 }
 
-.comments {
-    margin: 16px $content-indent;
+.comments-block {
+    margin: 16px $content-indent; 
 }
 
 .comments-form {
@@ -292,8 +291,41 @@ a {
         margin-top: 8px;
     }
 
+    &__date {
+        margin-top: 8px;
+    }
+
     &__submit {
         margin-top: 8px; 
+    }
+}
+
+.comments-box {
+    margin-top: 16px;
+    //@include debug-border(blue);
+}
+
+.comment {
+    margin: 16px 0;
+    padding: 8px;
+    border: 1px solid $brd-color-1;
+
+    &__name {
+        font-weight: bold;
+    }
+
+    &__text {
+        margin-top: 8px;
+    }
+
+    &__date {
+        margin-top: 8px;
+        font-size: 0.9em;
+        color: gray;
+    }
+
+    &__menu {
+        margin-top: 8px;
     }
 }
 
@@ -326,6 +358,7 @@ a {
 .textarea {  
     display: block;
     width: 100%;
+    min-height: 2.2rem;
     font-family: $font-family-1;
     font-size: 1rem;
     padding: 0.5em;
