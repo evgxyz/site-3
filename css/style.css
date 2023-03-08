@@ -11,18 +11,9 @@ body {
   box-sizing: border-box;
 }
 
-a {
-  text-decoration: none;
-  transition: color 0.5s;
-}
-a:hover {
-  text-decoration: underline;
-  transition: color 0.5s;
-}
-
 .h1 {
   font-family: Roboto, sans-serif;
-  font-size: 2.7em;
+  font-size: 2.7rem;
 }
 
 .h2 {
@@ -45,7 +36,7 @@ a:hover {
 .page-wrapper {
   display: flex;
   min-height: 100vh;
-  min-width: 256px;
+  min-width: 250px;
   flex-direction: column;
 }
 
@@ -68,7 +59,7 @@ a:hover {
 .header-body__container {
   display: flex;
   margin: 0 auto;
-  max-width: 1024px;
+  max-width: 900px;
   padding: 0 16px;
   background-color: #f9f9f9;
   border: 1px solid #c0c0c0;
@@ -102,20 +93,12 @@ a:hover {
   text-decoration: none;
 }
 .logo__image {
-  height: 5em;
+  height: 2.4em;
 }
 .logo__title {
   margin-left: 16px;
-  font-size: 2em;
+  font-size: 1.8em;
   font-weight: bold;
-}
-
-.feedback {
-  display: flex;
-  align-items: center;
-}
-.feedback__button {
-  margin-left: 16px;
 }
 
 .main-menu {
@@ -126,7 +109,7 @@ a:hover {
 .main-menu__container {
   display: flex;
   margin: 0 auto;
-  max-width: 1024px;
+  max-width: 900px;
   padding: 8px 16px;
   background-color: #f9f9f9;
   border-radius: 0 0 20px 20px;
@@ -154,7 +137,7 @@ a:hover {
 }
 .main__container {
   margin: 0 auto;
-  max-width: 1024px;
+  max-width: 900px;
   flex-grow: 1;
   background-color: #f9f9f9;
   border: 1px solid #c0c0c0;
@@ -162,26 +145,18 @@ a:hover {
 }
 
 .article {
-  margin: 16px 16px;
-}
-
-.comments-section {
-  margin-top: 16px;
-  border-top: 1px solid #c0c0c0;
-}
-
-.comments {
-  margin: 16px 16px;
+  margin: 1.2rem 16px;
 }
 
 .footer {
   display: flex;
+  display: none;
   margin-top: 10px;
   background-color: #dddddd;
 }
 .footer__container {
   margin: 0 auto;
-  max-width: 1024px;
+  max-width: 900px;
   flex-grow: 1;
   background-color: #f9f9f9;
   border: 1px solid #c0c0c0;
@@ -194,7 +169,7 @@ a:hover {
   flex-wrap: wrap;
   column-gap: 1em;
   row-gap: 1em;
-  max-width: 1024px;
+  max-width: 900px;
   font-size: 0.9rem;
 }
 .footer__col-1 {
@@ -227,41 +202,79 @@ a:hover {
   margin-bottom: 0;
 }
 
+.comments-section {
+  margin-top: 16px;
+  border-top: 1px solid #c0c0c0;
+}
+
+.comments {
+  margin: 16px 16px;
+}
+
+.comment-form {
+  display: block;
+}
+.comment-form__text {
+  margin-top: 8px;
+}
+.comment-form__submit {
+  margin-top: 8px;
+}
+
+.input-text {
+  display: block;
+  font-family: Roboto, sans-serif;
+  font-size: 1rem;
+  padding: 0.5em;
+  color: black;
+  background-color: white;
+  border: 1px solid #c0c0c0;
+  outline: none;
+  transition: border-color 0.5s;
+}
+.input-text:focus {
+  border-color: #00137F;
+  outline: none;
+  transition: border-color 0.5s;
+}
+.input-text:focus::placeholder {
+  opacity: 0;
+}
+
+.textarea {
+  display: block;
+  width: 100%;
+  font-family: Roboto, sans-serif;
+  font-size: 1rem;
+  padding: 0.5em;
+  color: black;
+  background-color: white;
+  border: 1px solid #c0c0c0;
+  outline: none;
+  transition: border-color 0.5s;
+  resize: vertical;
+}
+.textarea:focus {
+  border-color: #00137F;
+  outline: none;
+  transition: border-color 0.5s;
+}
+.textarea:focus::placeholder {
+  opacity: 0;
+}
+
 .button {
   display: inline-block;
-  padding: 0.6em 1em;
-  border-radius: 1.2em;
-  line-height: 1em;
-  text-align: center;
+  font-family: Roboto, sans-serif;
+  font-size: 1rem;
+  padding: 0.4em 0.7em;
+  background-color: #e0e0e0;
+  border: 1px solid #c0c0c0;
+  transition: background-color 0.5s, border-color 0.5s;
 }
 .button:hover {
+  background-color: #efefef;
+  border-color: #00137F;
   cursor: pointer;
+  transition: background-color 0.5s, border-color 0.5s;
 }
-.button--style-1 {
-  color: #000000;
-  background-color: #f9f9f9;
-  border: 2px solid #00137F;
-  transition: color 0.5s, background-color 0.5s;
-}
-.button--style-1:hover {
-  color: #00137F;
-  background-color: #e0e0e0;
-  transition: color 0.5s, background-color 0.5s;
-}
-
-/* .input {  
-    display: inline-block;
-    padding: 0.6em 1em;
-    border-radius: 1.2em;
-    line-height: 1em;
-    text-align: center; 
-
-    &:focus::placeholder { opacity: 0;}
-
-    &--style-1 {
-        color: $color-0;
-        background-color: $bg-color-0;
-        border: 2px solid $color-2;
-        outline-color: $color-2;
-    }
-}  */

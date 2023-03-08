@@ -6,6 +6,7 @@
     <meta http-equiv="content-language" content="ru">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/style.css"> 
+    <script src="js/main.js"></script>
 
     <title>Сайт</title>
     <meta name="keywords" content="">
@@ -27,14 +28,7 @@
                     </div>
                 </div>
                 <div class="header-body__right">
-                    <div class="feedback">
-                        <div class="feedback__text">8 (812) 123-45-67</div>
-                        <div class="feedback__button">
-                            <div class="button button--style-1" onclick="alert('Все операторы заняты')">
-                                Обратный звонок
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -73,7 +67,18 @@
 
             <div class="comments-section">
                 <div class="comments">
-                    Комментарии
+                    <form id="comment-form" action="#" class="comment-form">
+                        <div class="comment-form__name">
+                            <input type="text" id="" class="input-text" placeholder="Имя">
+                        </div>
+                        <div class="comment-form__text">
+                            <textarea id="" rows="10" class="textarea" placeholder="Текст"></textarea>
+                        </div>
+                        <div class="comment-form__submit">
+                            <button type="submit" class="button">Отправить</button>
+                        </div>
+                    </form>
+                    <div class="comments-list"></div>
                 </div>
             </div>
         </div>
