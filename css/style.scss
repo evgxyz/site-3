@@ -285,7 +285,7 @@ a {
     margin: 16px $content-indent;
 }
 
-.comment-form {
+.comments-form {
     display: block;
 
     &__text {
@@ -293,7 +293,7 @@ a {
     }
 
     &__submit {
-        margin-top: 8px;
+        margin-top: 8px; 
     }
 }
 
@@ -317,6 +317,10 @@ a {
     }
 
     &:focus::placeholder { opacity: 0; }
+
+    &--error {
+        border-color: red;
+    }
 }   
 
 .textarea {  
@@ -341,7 +345,17 @@ a {
     }
 
     &:focus::placeholder { opacity: 0; }
+
+    &--error {
+        border-color: red;
+    }
 } 
+
+.input-msgerror {
+    padding: 0.2em;
+    font-size: 0.8em;
+    color: red;
+}
 
 .button {  
     display: inline-block;

@@ -67,18 +67,20 @@
 
             <div class="comments-section">
                 <div class="comments">
-                    <form id="comment-form" action="#" class="comment-form">
-                        <div class="comment-form__name">
-                            <input type="text" id="" class="input-text" placeholder="Имя">
+                    <form id="comments-form" action="#" class="comments-form">
+                        <div class="comments-form__name">
+                            <input type="text" name="name" class="input-text" placeholder="Имя">
+                            <div name="name-msgerror" class="input-msgerror"></div>
                         </div>
-                        <div class="comment-form__text">
-                            <textarea id="" rows="10" class="textarea" placeholder="Текст"></textarea>
+                        <div class="comments-form__text">
+                            <textarea name="text" rows="10" class="textarea" placeholder="Текст"></textarea>
+                            <div name="text-msgerror" class="input-msgerror"></div>
                         </div>
-                        <div class="comment-form__submit">
+                        <div class="comments-form__submit">
                             <button type="submit" class="button">Отправить</button>
                         </div>
                     </form>
-                    <div class="comments-list"></div>
+                    <div id="comments-list" class="comments-list"></div>
                 </div>
             </div>
         </div>

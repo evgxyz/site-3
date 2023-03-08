@@ -211,13 +211,13 @@ a:hover {
   margin: 16px 16px;
 }
 
-.comment-form {
+.comments-form {
   display: block;
 }
-.comment-form__text {
+.comments-form__text {
   margin-top: 8px;
 }
-.comment-form__submit {
+.comments-form__submit {
   margin-top: 8px;
 }
 
@@ -240,6 +240,9 @@ a:hover {
 .input-text:focus::placeholder {
   opacity: 0;
 }
+.input-text--error {
+  border-color: red;
+}
 
 .textarea {
   display: block;
@@ -261,6 +264,15 @@ a:hover {
 }
 .textarea:focus::placeholder {
   opacity: 0;
+}
+.textarea--error {
+  border-color: red;
+}
+
+.input-msgerror {
+  padding: 0.2em;
+  font-size: 0.8em;
+  color: red;
 }
 
 .button {
