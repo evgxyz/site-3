@@ -25,8 +25,7 @@ function initComments() {
 //-----------------------------
 // Отправка формы добавления сообщения
 function commentFormSubmit(event) {
-    // отменяем отправку формы по умолчанию
-    event.preventDefault();
+    event.preventDefault(); // отменяем отправку формы по умолчанию
 
     let form = event.currentTarget;
 
@@ -35,6 +34,7 @@ function commentFormSubmit(event) {
     if (valid) {
         let now = (new Date()).getTime();
         let id = now + '-' + randomInt(1000000, 9999999); // уникальный id сообщения
+
         let comment = {
             id: id,
             name: name,
@@ -42,7 +42,10 @@ function commentFormSubmit(event) {
             date: date ?? now,
             liked: false,
         };
+
         addComment(comment);
+        
+        clearCommentForm(form);
     }
 }
 
@@ -119,6 +122,14 @@ function validCommentForm(form) {
         'text': form.text.value,
         'date': date,
     };
+}
+
+//-----------------------------
+// Очистка формы отправки комментария после отправки
+function clearCommentForm(form) {
+    form.name.value = '';
+    form.text.value = '';
+    form.date.value = '';
 }
 
 //-----------------------------
