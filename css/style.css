@@ -237,16 +237,16 @@ a:hover {
   font-weight: bold;
 }
 .comment__text {
-  margin-top: 8px;
+  margin-top: 10px;
 }
 .comment__date {
-  margin-top: 8px;
+  margin-top: 10px;
   font-size: 0.9em;
   color: gray;
 }
 .comment__menu {
   display: flex;
-  margin-top: 8px;
+  margin-top: 10px;
   align-items: center;
   column-gap: 10px;
 }
@@ -319,8 +319,14 @@ a:hover {
   border-color: red;
 }
 
+.text-counter {
+  margin: 3px;
+  font-size: 0.8em;
+  color: gray;
+}
+
 .input-msgerror {
-  padding: 0.2em;
+  margin: 3px;
   font-size: 0.8em;
   color: red;
 }

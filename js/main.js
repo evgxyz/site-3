@@ -13,9 +13,16 @@ function DOMReady() {
 // Ставим обработчики событий, выводим сообщения из хранилища
 function initComments() {
     let commentForm = document.getElementById('comment-form');
+    // отпрака формы
     commentForm.addEventListener('submit', commentFormSubmit);
     commentForm.text.addEventListener('keydown', commentFormTextKeydown);
+
+    // фокусировка на форме
     commentForm.addEventListener('focusin', commentFormFocusin);
+    commentForm.addEventListener('input', commentFormInput);
+
+    // ввода текста в форме
+    commentForm.text.addEventListener('input', commentFormTextInput);
 
     let commentsBox = document.getElementById('comments-box');
     commentsBox.addEventListener('click', commentsBoxClick);
@@ -35,7 +42,7 @@ function commentFormSubmit(event) {
 // Отправка формы добавления сообщения по событию keydown
 function commentFormTextKeydown(event) {
     let form = event.currentTarget.form;
-    if (event.code == 'Enter' && !(event.ctrlKey || event.metaKey)) {
+    if (event.code == 'Enter' && !event.shiftKey) {
         submitCommentForm(form);
         event.preventDefault(); 
     }
@@ -65,7 +72,7 @@ function submitCommentForm(form) {
 }
 
 //-----------------------------
-// Клик: лайк или удаление сообщений
+// Клик на сообщениях: лайк или удаление сообщения
 function commentsBoxClick(event) {
     let elem = event.target;
 
@@ -90,10 +97,35 @@ function commentsBoxClick(event) {
 }
 
 //-----------------------------
-// Фокусировка на форме: убираем сообщения об ошибках
+// Фокусировка на форме
 function commentFormFocusin(event) {
     let form = event.currentTarget;
+    fucusCommentForm(form);
+}
 
+//-----------------------------
+// Ввод на форме
+function commentFormInput(event) {
+    let form = event.currentTarget;
+    fucusCommentForm(form);
+}
+
+//-----------------------------
+// Ввод текста в форме
+function commentFormTextInput(event) {
+    let textarea = event.currentTarget;
+    let maxlength = textarea.getAttribute('maxlength');
+    console.log('maxlength='+maxlength);
+    if (maxlength) {
+        let count = maxlength - textarea.value.length; 
+        let counterStr = `Осталось символов: ${count}`;
+        textarea.form.querySelector('[name="text-counter"]').innerHTML = counterStr;
+    }
+}
+
+//-----------------------------
+// Убираем сообщения об ошибках
+function fucusCommentForm(form) {
     form.name.classList.remove('input-text--error');
     form.querySelector('[name="name-msgerror"]').innerHTML = '';
 

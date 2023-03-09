@@ -315,18 +315,18 @@ a {
     }
 
     &__text {
-        margin-top: 8px;
+        margin-top: 10px;
     }
 
     &__date {
-        margin-top: 8px;
+        margin-top: 10px;
         font-size: 0.9em;
         color: $color-3;
     }
 
     &__menu {
         display: flex;
-        margin-top: 8px;
+        margin-top: 10px;
         align-items: center;
         column-gap: 10px;
     }
@@ -401,8 +401,14 @@ a {
     }
 } 
 
+.text-counter {
+    margin: 3px;
+    font-size: 0.8em;
+    color: $color-3;
+}
+
 .input-msgerror {
-    padding: 0.2em;
+    margin: 3px;
     font-size: 0.8em;
     color: red;
 }
