@@ -208,6 +208,7 @@ a {
 
 .article {
     margin: 1.2rem $content-indent;
+    overflow-wrap: break-word;
 }
 
 // footer
@@ -316,6 +317,7 @@ a {
 
     &__text {
         margin-top: 10px;
+        overflow-wrap: break-word;
     }
 
     &__date {

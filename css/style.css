@@ -146,6 +146,7 @@ a:hover {
 
 .article {
   margin: 1.2rem 16px;
+  overflow-wrap: break-word;
 }
 
 .footer {
@@ -238,6 +239,7 @@ a:hover {
 }
 .comment__text {
   margin-top: 10px;
+  overflow-wrap: break-word;
 }
 .comment__date {
   margin-top: 10px;

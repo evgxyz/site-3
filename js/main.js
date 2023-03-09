@@ -42,7 +42,7 @@ function commentFormSubmit(event) {
 // Отправка формы добавления сообщения по событию keydown
 function commentFormTextKeydown(event) {
     let form = event.currentTarget.form;
-    if (event.code == 'Enter' && !event.shiftKey) {
+    if (event.code == 'Enter' && (event.ctrlKey || event.shiftKey)) {
         submitCommentForm(form);
         event.preventDefault(); 
     }
@@ -56,12 +56,13 @@ function submitCommentForm(form) {
     if (valid) {
         let now = (new Date()).getTime();
         let id = now + '-' + randomInt(1000000, 9999999); // уникальный id сообщения
+        if (date == '') date = now;
 
         let comment = {
             id: id,
             name: name,
             text: text,
-            date: date ?? now,
+            date: date,
             liked: false,
         };
 
@@ -205,7 +206,8 @@ function commentToHTML(comment) {
 
     html += `<div class="comment__text">${escapeHTML(comment.text)}</div>`;
 
-    html += `<div class="comment__date">${escapeHTML(comment.date)}</div>`;
+    let humanDateStr = humanDateFormat(comment.date);
+    html += `<div class="comment__date">${escapeHTML(humanDateStr)}</div>`;
 
     // меню с кнопками
     html += `<div class="comment__menu">`;
@@ -263,13 +265,14 @@ function likeComment(commentId) {
 }
 
 //-----------------------------
-// Парсинг даты в формате ДД.ММ.ГГГГ или ГГГГ.ММ.ДД. При неудаче возвращает null
+// Парсинг даты в формате ДД.ММ.ГГГГ или ГГГГ.ММ.ДД. 
+// Возвращает unixtime, при неудаче null
 function parseDate(str) {
     str = str.trim();
     
     let matches;
 
-    matches = str.match(/^(\d{2})[\.\-\s]+(\d{2})[\.\-\s]+(\d{4})$/);
+    matches = str.match(/^(\d{1,2})[\.\-\s]+(\d{1,2})[\.\-\s]+(\d{4})$/);
     if (matches) {
         let d, m, y; 
         d = +matches[1];
@@ -278,11 +281,11 @@ function parseDate(str) {
 
         let date = new Date(y, m - 1, d);
         if (date.getFullYear() == y && date.getMonth() + 1 == m && date.getDate() == d) {
-            return date;
+            return date.getTime();
         }
     }
 
-    matches = str.match(/^(\d{4})[\.\-\s]+(\d{2})[\.\-\s]+(\d{2})$/);
+    matches = str.match(/^(\d{4})[\.\-\s]+(\d{1,2})[\.\-\s]+(\d{1,2})$/);
     if (matches) {
         let d, m, y; 
         y = +matches[1];
@@ -291,11 +294,78 @@ function parseDate(str) {
 
         let date = new Date(y, m - 1, d);
         if (date.getFullYear() == y && date.getMonth() + 1 == m && date.getDate() == d) {
-            return date;
+            return date.getTime();
         }
     }
 
     return null;
+}
+
+//-----------------------------
+// Форматирует дату
+function humanDateFormat(unixTime) {
+    let date = new Date(unixTime);
+    let dateTime = date.getTime();
+
+    let now = new Date();
+    let todayTime = (new Date(now.getFullYear(), now.getMonth(), now.getDate())).getTime();
+
+    let dateStr = '';
+    if (dateTime >= todayTime) {
+        dateStr += 'сегодня';
+    }
+    else
+    if (dateTime >= todayTime - 24*60*60*1000) {
+        dateStr += 'вчера';
+    }
+    else {
+        dateStr += `${date.getDate()} ${LangFormat.monthNameOf(date.getMonth())} ${date.getFullYear()}`;
+    }
+
+    let hoursStr = date.getHours().toString().padStart(2, '0');
+    let minutesStr = date.getMinutes().toString().padStart(2, '0');
+    dateStr += `, ${hoursStr}:${minutesStr}`;
+    
+    return dateStr;
+}
+
+//-----------------------------
+class LangFormat {
+    static locale = {
+        ru: {
+            monthNameArr: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Окрябрь', 'Ноябрь', 'Декабрь'],
+            monthNameOfArr: ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'окрября', 'ноября', 'декабря'],
+            monthNameShortArr: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+            weekdayNameShortArr: ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'],
+        },
+
+        en: {
+            monthNameArr: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            monthNameShortArr: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            weekdayNameShortArr: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
+        },
+    };
+
+    static monthName(month, lang) {
+        lang = lang && (lang in LangFormat.locale) ? lang : 'ru';
+        return LangFormat.locale[lang].monthNameArr[month - 1];
+    };
+
+    static monthNameOf(month, lang) {
+        lang = lang && (lang in LangFormat.locale) ? lang : 'ru';
+        return LangFormat.locale[lang].monthNameOfArr[month - 1];
+    };
+
+    static monthNameShort(month, lang) {
+        lang = lang && (lang in LangFormat.locale) ? lang : 'ru';
+        return LangFormat.locale[lang].monthNameShortArr[month - 1];
+    };
+
+    static weekdayNameShort(day, lang) {
+        lang = lang && (lang in LangFormat.locale) ? lang : 'ru';
+        let dayIndex = day > 0 ? day - 1 : 6;
+        return LangFormat.locale[lang].weekdayNameShortArr[dayIndex];
+    };
 }
 
 //-----------------------------
