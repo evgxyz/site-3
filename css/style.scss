@@ -288,12 +288,18 @@ a {
 .comment-form {
     display: block;
 
+    &__name {
+        & input { width: 15em; }
+    }
+
     &__text {
         margin-top: 8px;
     }
 
     &__date {
         margin-top: 8px; 
+
+        & input { width: 15em; }
     }
 
     &__submit {

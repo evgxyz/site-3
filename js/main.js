@@ -16,13 +16,8 @@ function initComments() {
     // отпрака формы
     commentForm.addEventListener('submit', commentFormSubmit);
     commentForm.text.addEventListener('keydown', commentFormTextKeydown);
-
-    // фокусировка на форме
-    commentForm.addEventListener('focusin', commentFormFocusin);
+    // ввод на форме
     commentForm.addEventListener('input', commentFormInput);
-
-    // ввода текста в форме
-    commentForm.text.addEventListener('input', commentFormTextInput);
 
     let commentsBox = document.getElementById('comments-box');
     commentsBox.addEventListener('click', commentsBoxClick);
@@ -98,43 +93,33 @@ function commentsBoxClick(event) {
 }
 
 //-----------------------------
-// Фокусировка на форме
-function commentFormFocusin(event) {
-    let form = event.currentTarget;
-    fucusCommentForm(form);
-}
-
-//-----------------------------
 // Ввод на форме
 function commentFormInput(event) {
-    let form = event.currentTarget;
-    fucusCommentForm(form);
-}
+    let elem = event.target;
+    if (elem.tagName == 'INPUT') {
+        elem.classList.remove('input-text--error');
+        elem.form.querySelector(`[name="${elem.name}-msgerror"]`).innerHTML = '';
+    }
+    else
+    if (elem.tagName == 'TEXTAREA') {
+        elem.classList.remove('textarea--error');
+        elem.form.querySelector(`[name="${elem.name}-msgerror"]`).innerHTML = '';
 
-//-----------------------------
-// Ввод текста в форме
-function commentFormTextInput(event) {
-    let textarea = event.currentTarget;
-    let maxlength = textarea.getAttribute('maxlength');
-    console.log('maxlength='+maxlength);
-    if (maxlength) {
-        let count = maxlength - textarea.value.length; 
-        let counterStr = `Осталось символов: ${count}`;
-        textarea.form.querySelector('[name="text-counter"]').innerHTML = counterStr;
+        if (elem.name == 'text') {
+            countInputText(elem);
+        }
     }
 }
 
 //-----------------------------
-// Убираем сообщения об ошибках
-function fucusCommentForm(form) {
-    form.name.classList.remove('input-text--error');
-    form.querySelector('[name="name-msgerror"]').innerHTML = '';
-
-    form.text.classList.remove('textarea--error');
-    form.querySelector('[name="text-msgerror"]').innerHTML = '';
-
-    form.date.classList.remove('input-text--error');
-    form.querySelector('[name="date-msgerror"]').innerHTML = '';
+// Счетчик символов
+function countInputText(elem) {
+    let maxlength = elem.getAttribute('maxlength');
+    if (maxlength) {
+        let count = maxlength - elem.value.length; 
+        let counterStr = `Осталось символов: ${count}`;
+        elem.form.querySelector(`[name="${elem.name}-counter"]`).innerHTML = counterStr;
+    }
 }
 
 //-----------------------------
@@ -156,13 +141,24 @@ function validCommentForm(form) {
         form.querySelector('[name="text-msgerror"]').innerHTML = 'Текст пустой';
     }
 
-    let date = form.date.value.trim();
-    if (date != '') {
-        date = parseDate(form.date.value);
-        if (!date) {
+    let date = '';
+    let dateStr = form.date.value.trim();
+    if (dateStr != '') {
+        let error;
+        ({error, date} = parseDate(dateStr));
+        console.log(`error=${error}`);
+        console.log(`date=${date}`);
+        if (error != 0) {
             valid = false;
+            let errorStr = '';
+            if (error == 1) {
+                errorStr += 'Неправильный формат даты'; 
+            } 
+            else {
+                errorStr += 'Неправильная дата';
+            } 
             form.date.classList.add('input-text--error');
-            form.querySelector('[name="date-msgerror"]').innerHTML = 'Дата неправильная';
+            form.querySelector('[name="date-msgerror"]').innerHTML = errorStr;
         }
     }
 
@@ -270,35 +266,50 @@ function likeComment(commentId) {
 function parseDate(str) {
     str = str.trim();
     
+    let daym, month, year, hours, minutes;
     let matches;
 
-    matches = str.match(/^(\d{1,2})[\.\-\s]+(\d{1,2})[\.\-\s]+(\d{4})$/);
-    if (matches) {
-        let d, m, y; 
-        d = +matches[1];
-        m = +matches[2];
-        y = +matches[3];
+    if (matches = str.match(/^(\d{1,2})[\.\-\s]+(\d{1,2})[\.\-\s]+(\d{4})(\s+(\d{1,2})\s*[\:\.]\s*(\d{1,2}))?$/)) {
+        daym = +matches[1], 
+        month = +matches[2], 
+        year = +matches[3];
 
-        let date = new Date(y, m - 1, d);
-        if (date.getFullYear() == y && date.getMonth() + 1 == m && date.getDate() == d) {
-            return date.getTime();
+        hours = 0, minutes = 0;
+        if (matches[4]) {
+            hours = +matches[5];
+            minutes = +matches[6];
         }
     }
+    else
+    if (matches = str.match(/^(\d{4})[\.\-\s]+(\d{1,2})[\.\-\s]+(\d{1,2})(\s+(\d{1,2})\s*[\:\.]\s*(\d{1,2}))?$/)) {
+        daym = +matches[3], 
+        month = +matches[2], 
+        year = +matches[1];
 
-    matches = str.match(/^(\d{4})[\.\-\s]+(\d{1,2})[\.\-\s]+(\d{1,2})$/);
-    if (matches) {
-        let d, m, y; 
-        y = +matches[1];
-        m = +matches[2];
-        d = +matches[3];
-
-        let date = new Date(y, m - 1, d);
-        if (date.getFullYear() == y && date.getMonth() + 1 == m && date.getDate() == d) {
-            return date.getTime();
+        hours = 0, minutes = 0;
+        if (matches[4]) {
+            hours = +matches[5];
+            minutes = +matches[6];
         }
     }
+    else {
+        return { 'error': 1, 'date': null }; // неправильный формат
+    }
 
-    return null;
+    let monthIndex = month - 1;
+    let date = new Date(year, monthIndex, daym, hours, minutes);
+    if (
+        date.getFullYear() == year && 
+        date.getMonth() == monthIndex && 
+        date.getDate() == daym && 
+        date.getHours() == hours && 
+        date.getMinutes() == minutes 
+    ) {
+        return { 'error': 0, 'date': date.getTime() };
+    }
+    else {
+        return { 'error': 2, 'date': null }; // дата не реальная
+    }
 }
 
 //-----------------------------

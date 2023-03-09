@@ -215,11 +215,17 @@ a:hover {
 .comment-form {
   display: block;
 }
+.comment-form__name input {
+  width: 15em;
+}
 .comment-form__text {
   margin-top: 8px;
 }
 .comment-form__date {
   margin-top: 8px;
+}
+.comment-form__date input {
+  width: 15em;
 }
 .comment-form__submit {
   margin-top: 8px;
