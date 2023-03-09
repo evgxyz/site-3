@@ -39,7 +39,7 @@ function commentFormSubmit(event) {
             name: name,
             text: text,
             date: date ?? now,
-            liked: 0
+            liked: false,
         };
         addComment(comment);
     }
@@ -51,18 +51,25 @@ function commentFormSubmit(event) {
 //-----------------------------
 // лайк или удаление сообщений
 function commentsBoxClick(event) {
-    //console.log('boxclick');
     let elem = event.target;
 
     let item = elem.closest('.comment__menu .comment__menu-item');
     if (!item) return;
 
     if (item.classList.contains('comment__menu-item--del')) {
-        //console.log('deleting');
         let parentComment = item.closest('.comment');
         if (!parentComment) return;
-        console.log('deleting: '+parentComment.dataset.commentId);
-        deleteComment(parentComment.dataset.commentId);
+        let commentId = parentComment.dataset.commentId;
+        if (!commentId) return;
+        delComment(commentId);
+    }
+    else 
+    if (item.classList.contains('comment__menu-item--like')) {
+        let parentComment = item.closest('.comment');
+        if (!parentComment) return;
+        let commentId = parentComment.dataset.commentId;
+        if (!commentId) return;
+        likeComment(commentId);
     }
 }
 
@@ -102,9 +109,8 @@ function validCommentForm(form) {
 }
 
 //-----------------------------
-
+// при фокусировке на форме убираем сообщения об ошибках
 function commentFormFocusin(event) {
-    //console.log('focusin');
     let form = event.currentTarget;
 
     form.name.classList.remove('input-text--error');
@@ -112,10 +118,13 @@ function commentFormFocusin(event) {
 
     form.text.classList.remove('textarea--error');
     form.querySelector('[name="text-msgerror"]').innerHTML = '';
+
+    form.date.classList.remove('input-text--error');
+    form.querySelector('[name="date-msgerror"]').innerHTML = '';
 }
 
 //-----------------------------
-
+// добавление комментария
 function addComment(comment) {
     // add comment to storage
     let comments = JSON.parse(localStorage.getItem('comments')) ?? [];
@@ -128,12 +137,12 @@ function addComment(comment) {
 }
 
 //-----------------------------
-
-function deleteComment(commentId) {
+// удаление комментария
+function delComment(commentId) {
     // delete comment from storage
     let comments = JSON.parse(localStorage.getItem('comments')) ?? [];
-    let delIndex = comments.findIndex(x => (x.id == commentId));
-    comments.splice(delIndex, 1);
+    let index = comments.findIndex(x => (x.id == commentId));
+    comments.splice(index, 1);
     localStorage.setItem('comments', JSON.stringify(comments));
 
     // delete comment from page
@@ -142,7 +151,25 @@ function deleteComment(commentId) {
 }
 
 //-----------------------------
+// лайк комментария
+function likeComment(commentId) {
+    console.log('like ' + commentId);
+    // like comment to storage
+    let comments = JSON.parse(localStorage.getItem('comments')) ?? [];
+    let index = comments.findIndex(x => (x.id == commentId));
+    comments[index].liked = !comments[index].liked;
+    localStorage.setItem('comments', JSON.stringify(comments));
 
+    console.log('like to page' + commentId);
+    // like comment to page
+    let commentsBox = document.getElementById('comments-box');
+    commentsBox.querySelector(`[data-comment-id="${commentId}"]`)
+        ?.querySelector(`.comment__menu-item--like`)
+        ?.classList.toggle('comment__menu-item--like-liked');
+}
+
+//-----------------------------
+// вывод всех сохраненных комментариев на страницу
 function printComments() {
     let comments = JSON.parse(localStorage.getItem('comments')) ?? [];
 
@@ -155,18 +182,27 @@ function printComments() {
 }
 
 //-----------------------------
-
+// 
 function commentToHTML(comment) {
     let html = '';
+
     html += `<div class="comment" data-comment-id="${comment.id}">`;
+
     html += `<div class="comment__name">${escapeHTML(comment.name)}</div>`;
+
     html += `<div class="comment__text">${escapeHTML(comment.text)}</div>`;
+
     html += `<div class="comment__date">${escapeHTML(comment.date)}</div>`;
+
+    // меню с кнопками
     html += `<div class="comment__menu">`;
     html += `<div class="comment__menu-item comment__menu-item--del"></div>`;
-    html += `<div class="comment__menu-item comment__menu-item--like-${(comment.liked ? '1' : '0')}"></div>`;
+    let likedClass = comment.liked ? ' comment__menu-item--like-liked' : '';
+    html += `<div class="comment__menu-item comment__menu-item--like${likedClass}"></div>`;
     html += `</div>`;
+
     html += `</div>`;
+
     return html;
 }
 
