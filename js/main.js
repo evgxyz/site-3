@@ -17,7 +17,7 @@ function initComments() {
     commentForm.addEventListener('focusin', commentFormFocusin);
 
     let commentsBox = document.getElementById('comments-box');
-    commentsBox.addEventListener('onclick', commentsBoxClick);
+    commentsBox.addEventListener('click', commentsBoxClick);
 
     printComments();
 }
@@ -25,7 +25,6 @@ function initComments() {
 //-----------------------------
 // отправка формы
 function commentFormSubmit(event) {
-    console.log('submit');
     event.preventDefault();
 
     let form = event.currentTarget;
@@ -33,10 +32,13 @@ function commentFormSubmit(event) {
     let {valid, name, text, date} = validCommentForm(form);
     
     if (valid) {
+        let now = (new Date()).getTime();
+        let randId = now + '-' + randomInt(1000000, 9999999);
         let comment = {
+            id: randId,
             name: name,
             text: text,
-            date: date ?? (new Date()).getTime(),
+            date: date ?? now,
             liked: 0
         };
         addComment(comment);
@@ -47,10 +49,21 @@ function commentFormSubmit(event) {
 }
 
 //-----------------------------
-// перехватываем лайки и удаление сообщений
+// лайк или удаление сообщений
 function commentsBoxClick(event) {
-    let commentsBox = event.currentTarget;
-    let commentElem = event.Target;
+    //console.log('boxclick');
+    let elem = event.target;
+
+    let item = elem.closest('.comment__menu .comment__menu-item');
+    if (!item) return;
+
+    if (item.classList.contains('comment__menu-item--del')) {
+        //console.log('deleting');
+        let parentComment = item.closest('.comment');
+        if (!parentComment) return;
+        console.log('deleting: '+parentComment.dataset.commentId);
+        deleteComment(parentComment.dataset.commentId);
+    }
 }
 
 //-----------------------------
@@ -119,13 +132,13 @@ function addComment(comment) {
 function deleteComment(commentId) {
     // delete comment from storage
     let comments = JSON.parse(localStorage.getItem('comments')) ?? [];
-    let index = comments.findIndex(x => (x.id == commentId));
-    comments.splice(index, 1);
+    let delIndex = comments.findIndex(x => (x.id == commentId));
+    comments.splice(delIndex, 1);
     localStorage.setItem('comments', JSON.stringify(comments));
 
     // delete comment from page
     let commentsBox = document.getElementById('comments-box');
-    commentsBox.insertAdjacentHTML('afterbegin', commentToHTML(comment));
+    commentsBox.querySelector(`[data-comment-id="${commentId}"]`)?.remove();
 }
 
 //-----------------------------
@@ -145,13 +158,13 @@ function printComments() {
 
 function commentToHTML(comment) {
     let html = '';
-    html += `<div id="comment-${comment.id}" class="comment">`;
+    html += `<div class="comment" data-comment-id="${comment.id}">`;
     html += `<div class="comment__name">${escapeHTML(comment.name)}</div>`;
     html += `<div class="comment__text">${escapeHTML(comment.text)}</div>`;
     html += `<div class="comment__date">${escapeHTML(comment.date)}</div>`;
     html += `<div class="comment__menu">`;
     html += `<div class="comment__menu-item comment__menu-item--del"></div>`;
-    html += `<div class="comment__menu-item comment__menu-item--like${(comment.liked ? '-liked' : '')}"></div>`;
+    html += `<div class="comment__menu-item comment__menu-item--like-${(comment.liked ? '1' : '0')}"></div>`;
     html += `</div>`;
     html += `</div>`;
     return html;
@@ -204,6 +217,12 @@ function escapeHTML(str) {
         .replace(/\</g, '&lt;')
         .replace(/\>/g, '&gt')
     );
+}
+
+//-----------------------------
+
+function randomInt(min, max) {
+    return Math.floor(min + Math.random()*(max - min + 1));
 }
 
 //-----------------------------

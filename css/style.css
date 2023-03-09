@@ -260,10 +260,10 @@ a:hover {
 .comment__menu-item:hover {
   cursor: pointer;
 }
-.comment__menu-item--like {
+.comment__menu-item--like-0 {
   background-image: url("../images/icon-heart.svg");
 }
-.comment__menu-item--like-liked {
+.comment__menu-item--like-1 {
   background-image: url("../images/icon-heart-red.svg");
 }
 .comment__menu-item--del {

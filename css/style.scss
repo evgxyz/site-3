@@ -340,8 +340,8 @@ a {
 
         &:hover { cursor: pointer; }
 
-        &--like { background-image: url('../images/icon-heart.svg'); }
-        &--like-liked { background-image: url('../images/icon-heart-red.svg'); }
+        &--like-0 { background-image: url('../images/icon-heart.svg'); }
+        &--like-1 { background-image: url('../images/icon-heart-red.svg'); }
         &--del { background-image: url('../images/icon-trash.svg'); }
     }
 }
