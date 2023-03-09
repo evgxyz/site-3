@@ -14,6 +14,7 @@ function DOMReady() {
 function initComments() {
     let commentForm = document.getElementById('comment-form');
     commentForm.addEventListener('submit', commentFormSubmit);
+    commentForm.text.addEventListener('keydown', commentFormTextKeydown);
     commentForm.addEventListener('focusin', commentFormFocusin);
 
     let commentsBox = document.getElementById('comments-box');
@@ -23,12 +24,26 @@ function initComments() {
 }
 
 //-----------------------------
-// Отправка формы добавления сообщения
+// Отправка формы добавления сообщения по событию submit
 function commentFormSubmit(event) {
-    event.preventDefault(); // отменяем отправку формы по умолчанию
-
     let form = event.currentTarget;
+    submitCommentForm(form);
+    event.preventDefault(); 
+}
 
+//-----------------------------
+// Отправка формы добавления сообщения по событию keydown
+function commentFormTextKeydown(event) {
+    let form = event.currentTarget.form;
+    if (event.code == 'Enter' && !(event.ctrlKey || event.metaKey)) {
+        submitCommentForm(form);
+        event.preventDefault(); 
+    }
+}
+
+//-----------------------------
+// Отправка формы добавления сообщения
+function submitCommentForm(form) {
     let {valid, name, text, date} = validCommentForm(form);
     
     if (valid) {
@@ -44,7 +59,7 @@ function commentFormSubmit(event) {
         };
 
         addComment(comment);
-        
+
         clearCommentForm(form);
     }
 }
@@ -94,32 +109,34 @@ function commentFormFocusin(event) {
 function validCommentForm(form) {
     let valid = true;
 
-    if (form.name.value == '') {
+    let name = form.name.value.trim();
+    if (name == '') {
         valid = false;
         form.name.classList.add('input-text--error');
         form.querySelector('[name="name-msgerror"]').innerHTML = 'Имя пустое';
     }
 
-    if (form.text.value == '') {
+    let text = form.text.value.trim();
+    if (text == '') {
         valid = false;
         form.text.classList.add('textarea--error');
         form.querySelector('[name="text-msgerror"]').innerHTML = 'Текст пустой';
     }
 
-    let date = null;
-    if (form.date.value != '') {
-        let date = parseDate(form.date.value);
+    let date = form.date.value.trim();
+    if (date != '') {
+        date = parseDate(form.date.value);
         if (!date) {
             valid = false;
             form.date.classList.add('input-text--error');
-            form.querySelector('[name="date-msgerror"]').innerHTML = 'Дата в неправильном формате';
+            form.querySelector('[name="date-msgerror"]').innerHTML = 'Дата неправильная';
         }
     }
 
     return { 
         'valid': valid, 
-        'name': form.name.value,
-        'text': form.text.value,
+        'name': name,
+        'text': text,
         'date': date,
     };
 }
