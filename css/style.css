@@ -23,13 +23,12 @@ h2, .h2 {
 
 a {
   color: #222222;
-  text-decoration: underline;
-  text-decoration-color: transparent;
+  text-decoration: none;
   transition: color 0.5s, background-color 0.5s;
 }
 a:hover {
   color: #00137F;
-  text-decoration-color: #00137F;
+  text-decoration: underline;
   transition: color 0.5s, background-color 0.5s;
 }
 
@@ -165,7 +164,7 @@ a:hover {
 }
 .footer__row {
   display: flex;
-  margin: 1em 16px;
+  margin: 16px 16px;
   justify-content: space-between;
   flex-wrap: wrap;
   column-gap: 1em;
@@ -177,14 +176,14 @@ a:hover {
   flex-grow: 1;
 }
 .footer__col-1-title {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.3em;
 }
 .footer__col {
   flex-basis: 15%;
   flex-grow: 1;
 }
 .footer__col-title {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.3em;
   text-transform: uppercase;
 }
 .footer__col-list {
@@ -193,7 +192,7 @@ a:hover {
   list-style-type: none;
 }
 .footer__col-list > li {
-  margin: 0.8em 0;
+  margin: 0.6em 0;
 }
 .footer__col-list > li:first-child {
   margin-top: 0;
@@ -246,7 +245,7 @@ a:hover {
 .comment__date {
   margin-top: 10px;
   font-size: 0.9em;
-  color: gray;
+  color: #555555;
 }
 .comment__menu {
   display: flex;
@@ -326,7 +325,7 @@ a:hover {
 .text-counter {
   margin: 3px;
   font-size: 0.8em;
-  color: gray;
+  color: #555555;
 }
 
 .input-msgerror {

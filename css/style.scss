@@ -10,7 +10,7 @@ $font-family-1: Verdana, sans-serif;
 // цвета основные
 $color-1: #222222;
 $color-2: #00137F;
-$color-3: gray;
+$color-3: #555555;
 $color-warn: red;
 
 $bg-color-0: #dddddd;
@@ -54,13 +54,12 @@ h2, .h2 {
 
 a {
     color: $color-1;
-    text-decoration: underline;
-    text-decoration-color: transparent;
+    text-decoration: none;
     transition: color 0.5s, background-color 0.5s;
     
     &:hover {
         color: $color-2;
-        text-decoration-color: $color-2;
+        text-decoration: underline;
         transition: color 0.5s, background-color 0.5s;
     }
 }
@@ -232,7 +231,7 @@ a {
 
     &__row {
         display: flex;
-        margin: 1em $content-indent; 
+        margin: 16px $content-indent; 
         justify-content: space-between;
         flex-wrap: wrap; 
         column-gap: 1em;
@@ -248,7 +247,7 @@ a {
     }
 
     &__col-1-title {
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.3em;
     }
 
     &__col {
@@ -258,7 +257,7 @@ a {
     }
 
     &__col-title {
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.3em;
         text-transform: uppercase;
     }
 
@@ -269,7 +268,7 @@ a {
         //@include debug-border(red);
 
         & > li {
-            margin: 0.8em 0;
+            margin: 0.6em 0;
             &:first-child { margin-top: 0; }
             &:last-child { margin-bottom: 0; } 
         }
@@ -338,6 +337,7 @@ a {
         margin-top: 10px;
         align-items: center;
         column-gap: 10px;
+        //border-top: 1px solid $brd-color-1;
     }
 
     &__menu-item {
