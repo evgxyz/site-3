@@ -5,12 +5,13 @@ $content-min-width: 250px;
 $content-indent: 16px; 
 
 // шрифт
-$font-family-1: Roboto, sans-serif; 
+$font-family-1: Verdana, sans-serif; 
 
 // цвета основные
-$color-1: #000000;
+$color-1: #222222;
 $color-2: #00137F;
 $color-3: gray;
+$color-warn: red;
 
 $bg-color-0: #dddddd;
 $bg-color-1: #f9f9f9;
@@ -41,14 +42,14 @@ body {
 
 * { box-sizing: border-box; }
 
-.h1 {
+h1, .h1 {
     font-family: $font-family-1;
-    font-size: 2.7rem;
+    font-size: 1.6em;
 }
 
-.h2 {
+h2, .h2 {
     font-family: $font-family-1; 
-    font-size: 1.8rem;
+    font-size: 1.4em;
 }
 
 a {
@@ -207,14 +208,15 @@ a {
 }
 
 .article {
-    margin: 1.2rem $content-indent;
+    margin: 1.5rem $content-indent;
     overflow-wrap: break-word;
+    //@include debug-border(blue);
 }
 
 // footer
 .footer {
     display: flex;
-    display: none;
+    //display: none;
     margin-top: 10px;
     background-color: $bg-color-0;
 
@@ -275,10 +277,12 @@ a {
     }
 }
 
-// блок комментарии
+// блок с комментариями
+
 .comments-section {
     margin-top: 16px;
     border-top: 1px solid $brd-color-1;
+    //@include debug-border(red);
 }
 
 .comments-block {
@@ -286,8 +290,6 @@ a {
 }
 
 .comment-form {
-    display: block;
-
     &__name {
         & input { width: 15em; }
     }
@@ -354,7 +356,7 @@ a {
     }
 }
 
-// поля формы
+// поля
 .input-text {  
     display: block;
     font-family: $font-family-1;
@@ -376,7 +378,7 @@ a {
     &:focus::placeholder { opacity: 0; }
 
     &--error {
-        border-color: red;
+        border-color: $color-warn;
     }
 }   
 
@@ -405,7 +407,7 @@ a {
     &:focus::placeholder { opacity: 0; }
 
     &--error {
-        border-color: red;
+        border-color: $color-warn;
     }
 } 
 
@@ -418,7 +420,7 @@ a {
 .input-msgerror {
     margin: 3px;
     font-size: 0.8em;
-    color: red;
+    color: $color-warn;
 }
 
 .button {  
@@ -430,7 +432,7 @@ a {
     border: 1px solid $brd-color-1;
     transition: background-color 0.5s, border-color 0.5s;
 
-    &:hover { 
+    &:hover {  
         background-color: $button-bg-color-1h; 
         border-color: $brd-color-2;
         cursor: pointer; 

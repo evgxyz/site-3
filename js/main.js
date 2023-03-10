@@ -51,7 +51,7 @@ function submitCommentForm(form) {
     if (valid) {
         let now = (new Date()).getTime();
         let id = now + '-' + randomInt(1000000, 9999999); // уникальный id сообщения
-        if (date == '') date = now;
+        if (!date) date = now; 
 
         let comment = {
             id: id,
@@ -80,7 +80,10 @@ function commentsBoxClick(event) {
         if (!parentComment) return;
         let commentId = parentComment.dataset.commentId;
         if (!commentId) return;
-        delComment(commentId);
+
+        if (confirm('Удалить сообщение?')) {
+            delComment(commentId);
+        }
     }
     else 
     if (item.classList.contains('comment__menu-item--like')) {
@@ -88,6 +91,7 @@ function commentsBoxClick(event) {
         if (!parentComment) return;
         let commentId = parentComment.dataset.commentId;
         if (!commentId) return;
+
         likeComment(commentId);
     }
 }
@@ -128,35 +132,55 @@ function validCommentForm(form) {
     let valid = true;
 
     let name = form.name.value.trim();
-    if (name == '') {
-        valid = false;
-        form.name.classList.add('input-text--error');
-        form.querySelector('[name="name-msgerror"]').innerHTML = 'Имя пустое';
+    {
+        let errorStr = '';
+        if (name == '') {
+            valid = false;
+            errorStr = 'Имя пустое';   
+        }
+        else 
+        if (!/^[\w\p{sc=Cyrillic}][\w\p{sc=Cyrillic}\-\s\.]+$/ui.test(name)) {
+            valid = false;
+            errorStr = 'Неправильный формат имени'; 
+        }
+
+        if (errorStr != '') {
+            form.name.classList.add('input-text--error');
+            form.querySelector('[name="name-msgerror"]').innerHTML = errorStr;
+        }
     }
 
     let text = form.text.value.trim();
-    if (text == '') {
-        valid = false;
-        form.text.classList.add('textarea--error');
-        form.querySelector('[name="text-msgerror"]').innerHTML = 'Текст пустой';
+    {
+        let errorStr = '';
+        if (text == '') {
+            valid = false;
+            errorStr = 'Текст пустой';
+        }
+        
+        if (errorStr != '') {
+            form.text.classList.add('textarea--error');
+            form.querySelector('[name="text-msgerror"]').innerHTML = errorStr;
+        }
     }
 
-    let date = '';
-    let dateStr = form.date.value.trim();
-    if (dateStr != '') {
-        let error;
-        ({error, date} = parseDate(dateStr));
-        console.log(`error=${error}`);
-        console.log(`date=${date}`);
-        if (error != 0) {
-            valid = false;
-            let errorStr = '';
-            if (error == 1) {
-                errorStr += 'Неправильный формат даты'; 
-            } 
-            else {
-                errorStr += 'Неправильная дата';
-            } 
+    let date = null;
+    {
+        let dateStr = form.date.value.trim();
+        let errorStr = '';
+        if (dateStr != '') {
+            let error;
+            ({error, date} = parseDate(dateStr));
+            if (error != 0) {
+                valid = false;
+                switch (error) {
+                    case 1: errorStr += 'Неправильный формат даты'; break;
+                    case 2: errorStr += 'Неправильная дата'; break;
+                } 
+            }
+        }
+
+        if (errorStr != '') {
             form.date.classList.add('input-text--error');
             form.querySelector('[name="date-msgerror"]').innerHTML = errorStr;
         }
