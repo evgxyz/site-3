@@ -25,12 +25,12 @@ a {
   color: #222222;
   text-decoration: underline;
   text-decoration-color: transparent;
-  transition: color 0.5s, background-color 0.5s, text-decoration-color 0.5s;
+  transition: color 0.5s, background-color 0.5s;
 }
 a:hover {
   color: #00137F;
   text-decoration-color: #00137F;
-  transition: color 0.5s, background-color 0.5s, text-decoration-color 0.5s;
+  transition: color 0.5s, background-color 0.5s;
 }
 
 .page-wrapper {
@@ -97,7 +97,7 @@ a:hover {
 }
 .logo__title {
   margin-left: 16px;
-  font-size: 1.8em;
+  font-size: 1.6em;
   font-weight: bold;
 }
 
@@ -152,6 +152,7 @@ a:hover {
 .footer {
   display: flex;
   margin-top: 10px;
+  font-size: 0.8rem;
   background-color: #dddddd;
 }
 .footer__container {
@@ -170,7 +171,6 @@ a:hover {
   column-gap: 1em;
   row-gap: 1em;
   max-width: 900px;
-  font-size: 0.9rem;
 }
 .footer__col-1 {
   flex-basis: 15%;

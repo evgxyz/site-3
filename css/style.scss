@@ -56,12 +56,12 @@ a {
     color: $color-1;
     text-decoration: underline;
     text-decoration-color: transparent;
-    transition: color 0.5s, background-color 0.5s, text-decoration-color 0.5s;
+    transition: color 0.5s, background-color 0.5s;
     
     &:hover {
         color: $color-2;
         text-decoration-color: $color-2;
-        transition: color 0.5s, background-color 0.5s, text-decoration-color 0.5s;
+        transition: color 0.5s, background-color 0.5s;
     }
 }
 
@@ -145,7 +145,7 @@ a {
 
     &__title {
         margin-left: 16px;
-        font-size: 1.8em;
+        font-size: 1.6em;
         font-weight: bold;
     }
 }
@@ -216,8 +216,8 @@ a {
 // footer
 .footer {
     display: flex;
-    //display: none;
     margin-top: 10px;
+    font-size: 0.8rem;
     background-color: $bg-color-0;
 
     &__container {
@@ -238,7 +238,6 @@ a {
         column-gap: 1em;
         row-gap: 1em;
         max-width: $content-max-width;
-        font-size: 0.9rem;
         //@include debug-border(red);
     }
 
