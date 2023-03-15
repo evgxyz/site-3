@@ -267,6 +267,7 @@ function likeComment(commentId) {
         let index = comments.findIndex(x => (x.id == commentId));
         comments[index].liked = !comments[index].liked;
         localStorage.setItem('comments', JSON.stringify(comments));
+        resolve(true);
     });
 }
 
