@@ -189,7 +189,6 @@ function countInputText(elem) {
 //-----------------------------
 // Вывод всех комментариев на страницу из хранилища
 function printComments() {
-
     // получам комментарии из хранилища. оформлено асинхронно для имитации взаимодействия с сервером
     let getCommentsFromServer = new Promise((resolve, reject) => {
         let comments = JSON.parse(localStorage.getItem('comments')) ?? [];
@@ -200,7 +199,6 @@ function printComments() {
         for (let comment of comments) {
             HTML += commentToHTML(comment);
         }
-
         document.getElementById('comments-box').innerHTML = HTML;
     });
 }
@@ -217,7 +215,7 @@ function commentToHTML(comment) {
     // дата
     let humanDateStr = humanDateFormat(comment.date);
     HTML += `<div class="comment__date">${escapeHTML(humanDateStr)}</div>`;
-    // меню с кнопками
+    // меню с кнопками удалить и лайк
     let likedClass = comment.liked ? ' comment__menu-item--like-liked' : '';
     HTML += `<div class="comment__menu">`
         + `<div class="comment__menu-item comment__menu-item--del"></div>`
