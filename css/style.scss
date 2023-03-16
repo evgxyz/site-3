@@ -317,6 +317,12 @@ a {
     padding: 10px;
     border: 1px solid $brd-color-1;
 
+    &__content {
+        &.hidden {
+            display: none;
+        }
+    }
+
     &__name {
         font-weight: bold;
     }
@@ -352,6 +358,10 @@ a {
         &--del { background-image: url('../images/icon-trash.svg'); }
         &--like { background-image: url('../images/icon-heart.svg'); }
         &--like-liked { background-image: url('../images/icon-heart-red.svg'); }
+    }
+
+    &__action-link {
+        color: green; 
     }
 }
 

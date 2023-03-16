@@ -235,6 +235,9 @@ a:hover {
   padding: 10px;
   border: 1px solid #c0c0c0;
 }
+.comment__content.hidden {
+  display: none;
+}
 .comment__name {
   font-weight: bold;
 }
@@ -271,6 +274,9 @@ a:hover {
 }
 .comment__menu-item--like-liked {
   background-image: url("../images/icon-heart-red.svg");
+}
+.comment__action-link {
+  color: green;
 }
 
 .input-text {

@@ -47,7 +47,7 @@ function commentFormTextKeydown(event) {
 //-----------------------------
 // Отправка формы добавления сообщения
 function submitCommentForm(form) {
-
+    
     let valid = true;
 
     let name = form.name.value.trim();
@@ -109,7 +109,7 @@ function submitCommentForm(form) {
     
     let now = (new Date()).getTime();
     let id = now + '-' + randomInt(1000000, 9999999); // уникальный id сообщения
-    if (!date) date = now; 
+    if (!date) date = now; // если дата пустая, стаим текущую
 
     let comment = {
         id: id,
@@ -117,6 +117,7 @@ function submitCommentForm(form) {
         text: text,
         date: date,
         liked: false,
+        deleted: false,
     };
 
     addComment(comment);
@@ -132,27 +133,37 @@ function submitCommentForm(form) {
 function commentsBoxClick(event) {
     let elem = event.target;
 
-    let item = elem.closest('.comment__menu .comment__menu-item');
+    let item = elem.closest('[data-action]');
     if (!item) return;
 
-    if (item.classList.contains('comment__menu-item--del')) {
-        let parentComment = item.closest('.comment');
-        if (!parentComment) return;
-        let commentId = parentComment.dataset.commentId;
-        if (!commentId) return;
-
-        if (confirm('Удалить сообщение?')) {
-            delComment(commentId);
-        }
-    }
-    else 
-    if (item.classList.contains('comment__menu-item--like')) {
+    if (item.dataset.action == 'like') {
+        event.preventDefault();
         let parentComment = item.closest('.comment');
         if (!parentComment) return;
         let commentId = parentComment.dataset.commentId;
         if (!commentId) return;
 
         likeComment(commentId);
+    }
+    else
+    if (item.dataset.action == 'del') {
+        event.preventDefault();
+        let parentComment = item.closest('.comment');
+        if (!parentComment) return;
+        let commentId = parentComment.dataset.commentId;
+        if (!commentId) return;
+
+        delComment(commentId);
+    }
+    else 
+    if (item.dataset.action == 'undel') {
+        event.preventDefault();
+        let parentComment = item.closest('.comment');
+        if (!parentComment) return;
+        let commentId = parentComment.dataset.commentId;
+        if (!commentId) return;
+
+        undelComment(commentId);
     }
 }
 
@@ -191,10 +202,12 @@ function countInputText(elem) {
 function printComments() {
     // получам комментарии из хранилища. оформлено асинхронно для имитации взаимодействия с сервером
     let getCommentsFromServer = new Promise((resolve, reject) => {
-        let comments = JSON.parse(localStorage.getItem('comments')) ?? [];
+        let comments = (JSON.parse(localStorage.getItem('comments')) ?? [])
+            .filter(x => !x.deleted); // фильтруем удаленные комментарии
         resolve(comments);
-    })
-    .then(comments => {
+    });
+
+    getCommentsFromServer.then(comments => {
         let HTML = '';
         for (let comment of comments) {
             HTML += commentToHTML(comment);
@@ -207,7 +220,8 @@ function printComments() {
 // Получение html комментария
 function commentToHTML(comment) {
     
-    let HTML = `<div class="comment" data-comment-id="${escapeHTML(comment.id)}">`;
+    let HTML = `<div class="comment" data-comment-id="${escapeHTML(comment.id)}">`
+        + `<div class="comment__content">`;
     // имя
     HTML += `<div class="comment__name">${escapeHTML(comment.name)}</div>`;
     // текст
@@ -218,10 +232,10 @@ function commentToHTML(comment) {
     // меню с кнопками удалить и лайк
     let likedClass = comment.liked ? ' comment__menu-item--like-liked' : '';
     HTML += `<div class="comment__menu">`
-        + `<div class="comment__menu-item comment__menu-item--del"></div>`
-        + `<div class="comment__menu-item comment__menu-item--like${likedClass}"></div>`
+        + `<div data-action="del" class="comment__menu-item comment__menu-item--del"></div>`
+        + `<div data-action="like" class="comment__menu-item comment__menu-item--like${likedClass}"></div>`
         + `</div>`;
-    HTML += `</div>`;
+    HTML += `</div></div>`;
 
     return HTML;
 }
@@ -239,41 +253,21 @@ function addComment(comment) {
         comments.unshift(comment);
         localStorage.setItem('comments', JSON.stringify(comments));
         resolve(true);
-    })
-    .then( // какая-то обработка резульатов
+    });
+
+    addCommentToServer.then( // какая-то обработка резульатов
         value => { console.log('ok') },
         error => { console.log('error: ' + error) }
     );
 }
 
 //-----------------------------
-// Удаление комментария
-function delComment(commentId) {
-    // удаляем со страницы
-    let commentsBox = document.getElementById('comments-box');
-    commentsBox.querySelector(`[data-comment-id="${commentId}"]`)?.remove();
-
-    // удаляем комментарий из хранилища. оформлено асинхронно для имитации взаимодействия с сервером
-    let delCommentFromServer = new Promise((resolve, reject) => {
-        let comments = JSON.parse(localStorage.getItem('comments')) ?? [];
-        let index = comments.findIndex(x => (x.id == commentId));
-        comments.splice(index, 1);
-        localStorage.setItem('comments', JSON.stringify(comments));
-        resolve(true);
-    })
-    .then( // какая-то обработка резульатов
-        value => { console.log('ok') },
-        error => { console.log('error: ' + error) }
-    );
-}
-
-//-----------------------------
-// Лайк комментария
+// Лайк/унлайк комментария
 function likeComment(commentId) {
     // лайк на странице
-    let commentsBox = document.getElementById('comments-box');
-    commentsBox.querySelector(`[data-comment-id="${commentId}"]`)
-        ?.querySelector(`.comment__menu-item--like`)
+    document.getElementById('comments-box')
+        .querySelector(`[data-comment-id="${commentId}"]`)
+        ?.querySelector(`[data-action="like"]`)
         ?.classList.toggle('comment__menu-item--like-liked');
 
     // лайк комментария в хранилище. оформлено асинхронно для имитации взаимодействия с сервером
@@ -283,10 +277,63 @@ function likeComment(commentId) {
         comments[index].liked = !comments[index].liked;
         localStorage.setItem('comments', JSON.stringify(comments));
         resolve(true);
-    })
-    .then( // какая-то обработка резульатов
+    });
+    
+    likeCommentToServer.then( // какая-то обработка резульатов
         value => { console.log('ok') },
         error => { console.log('error: ' + error) }
+    );
+}
+
+//-----------------------------
+// Удаление комментария
+function delComment(commentId) {
+    // удаление комментария со страницы
+    let commentElem = document.getElementById('comments-box')
+        .querySelector(`[data-comment-id="${commentId}"]`);
+    // скрываем содержимое комментария
+    commentElem.querySelector(`.comment__content`).classList.add('hidden');
+    // добавляем кнопку "восснаовить"
+    commentElem.insertAdjacentHTML('beforeend',
+        `<div data-action="undel"><a href="#" class="comment__action-link">Восстановить</a></div>`);
+
+    // удаляем комментарий из хранилища. оформлено асинхронно для имитации взаимодействия с сервером
+    let delCommentFromServer = new Promise((resolve, reject) => {
+        let comments = JSON.parse(localStorage.getItem('comments')) ?? [];
+        let index = comments.findIndex(x => (x.id == commentId));
+        comments[index].deleted = true;
+        localStorage.setItem('comments', JSON.stringify(comments));
+        resolve(true);
+    });
+
+    delCommentFromServer.then( // какая-то обработка резульатов
+        value => { console.log('del ok') },
+        error => { console.log('del error: ' + error) }
+    );
+}
+
+//-----------------------------
+// Восстановление удаленного комментария
+function undelComment(commentId) {
+    let commentElem = document.getElementById('comments-box')
+        .querySelector(`[data-comment-id="${commentId}"]`);
+    // показываем скрытое содержимое комментария
+    commentElem.querySelector(`.comment__content`).classList.remove('hidden');
+    // удаляем кнопку "восснаовить"
+    commentElem.querySelector('[data-action="undel"]')?.remove();
+
+    // восстанавливаем комментарий в хранилище. оформлено асинхронно для имитации взаимодействия с сервером
+    let undelCommentFromServer = new Promise((resolve, reject) => {
+        let comments = JSON.parse(localStorage.getItem('comments')) ?? [];
+        let index = comments.findIndex(x => (x.id == commentId));
+        comments[index].deleted = false;
+        localStorage.setItem('comments', JSON.stringify(comments));
+        resolve(true);
+    });
+
+    undelCommentFromServer.then( // какая-то обработка резульатов
+        value => { console.log('undel ok') },
+        error => { console.log('undel error: ' + error) }
     );
 }
 
