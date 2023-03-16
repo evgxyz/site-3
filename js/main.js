@@ -65,7 +65,7 @@ function submitCommentForm(form) {
 
         if (errorStr != '') {
             form.name.classList.add('input-text--error');
-            form.querySelector('[name="name-msgerror"]').innerHTML = errorStr;
+            form.querySelector('[name="name-errormsg"]').innerHTML = errorStr;
         }
     }
     // текст
@@ -79,7 +79,7 @@ function submitCommentForm(form) {
         
         if (errorStr != '') {
             form.text.classList.add('textarea--error');
-            form.querySelector('[name="text-msgerror"]').innerHTML = errorStr;
+            form.querySelector('[name="text-errormsg"]').innerHTML = errorStr;
         }
     }
     // дата
@@ -101,7 +101,7 @@ function submitCommentForm(form) {
 
         if (errorStr != '') {
             form.date.classList.add('input-text--error');
-            form.querySelector('[name="date-msgerror"]').innerHTML = errorStr;
+            form.querySelector('[name="date-errormsg"]').innerHTML = errorStr;
         }
     }
 
@@ -174,12 +174,12 @@ function commentFormInput(event) {
     let elem = event.target;
     if (elem.tagName == 'INPUT') {
         elem.classList.remove('input-text--error');
-        elem.form.querySelector(`[name="${elem.name}-msgerror"]`).innerHTML = '';
+        elem.form.querySelector(`[name="${elem.name}-errormsg"]`).innerHTML = '';
     }
     else
     if (elem.tagName == 'TEXTAREA') {
         elem.classList.remove('textarea--error');
-        elem.form.querySelector(`[name="${elem.name}-msgerror"]`).innerHTML = '';
+        elem.form.querySelector(`[name="${elem.name}-errormsg"]`).innerHTML = '';
 
         if (elem.name == 'text') {
             countInputText(elem);
