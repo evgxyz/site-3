@@ -189,14 +189,20 @@ function countInputText(elem) {
 //-----------------------------
 // Вывод всех комментариев на страницу из хранилища
 function printComments() {
-    let comments = JSON.parse(localStorage.getItem('comments')) ?? [];
 
-    let html = '';
-    for (let comment of comments) {
-        html += commentToHTML(comment);
-    }
+    // получам комментарии из хранилища. оформлено асинхронно для имитации взаимодействия с сервером
+    let getCommentsFromServer = new Promise((resolve, reject) => {
+        let comments = JSON.parse(localStorage.getItem('comments')) ?? [];
+        resolve(comments);
+    })
+    .then(comments => {
+        let HTML = '';
+        for (let comment of comments) {
+            HTML += commentToHTML(comment);
+        }
 
-    document.getElementById('comments-box').innerHTML = html;
+        document.getElementById('comments-box').innerHTML = HTML;
+    });
 }
 
 //-----------------------------
@@ -225,14 +231,21 @@ function commentToHTML(comment) {
 //-----------------------------
 // Добавление комментария
 function addComment(comment) {
-    // add comment to storage
-    let comments = JSON.parse(localStorage.getItem('comments')) ?? [];
-    comments.unshift(comment);
-    localStorage.setItem('comments', JSON.stringify(comments));
-
-    // add comment to page
+    // добавляем комментарий на страницу
     let commentsBox = document.getElementById('comments-box');
     commentsBox.insertAdjacentHTML('afterbegin', commentToHTML(comment));
+
+    // добавляем комментарий в хранилище. оформлено асинхронно для имитации взаимодействия с сервером
+    let addCommentToServer = new Promise((resolve, reject) => {
+        let comments = JSON.parse(localStorage.getItem('comments')) ?? [];
+        comments.unshift(comment);
+        localStorage.setItem('comments', JSON.stringify(comments));
+        resolve(true);
+    })
+    .then( // какая-то обработка резульатов
+        value => { console.log('ok') },
+        error => { console.log('error: ' + error) }
+    );
 }
 
 //-----------------------------
@@ -242,14 +255,18 @@ function delComment(commentId) {
     let commentsBox = document.getElementById('comments-box');
     commentsBox.querySelector(`[data-comment-id="${commentId}"]`)?.remove();
 
-    // удаляем из хранилища
-    let delPromise = new Promise((resolve, reject) => {
+    // удаляем комментарий из хранилища. оформлено асинхронно для имитации взаимодействия с сервером
+    let delCommentFromServer = new Promise((resolve, reject) => {
         let comments = JSON.parse(localStorage.getItem('comments')) ?? [];
         let index = comments.findIndex(x => (x.id == commentId));
         comments.splice(index, 1);
         localStorage.setItem('comments', JSON.stringify(comments));
         resolve(true);
-    });
+    })
+    .then( // какая-то обработка резульатов
+        value => { console.log('ok') },
+        error => { console.log('error: ' + error) }
+    );
 }
 
 //-----------------------------
@@ -261,14 +278,18 @@ function likeComment(commentId) {
         ?.querySelector(`.comment__menu-item--like`)
         ?.classList.toggle('comment__menu-item--like-liked');
 
-    // лайк в хранилище
-    let likePromise = new Promise((resolve, reject) => {
+    // лайк комментария в хранилище. оформлено асинхронно для имитации взаимодействия с сервером
+    let likeCommentToServer = new Promise((resolve, reject) => {
         let comments = JSON.parse(localStorage.getItem('comments')) ?? [];
         let index = comments.findIndex(x => (x.id == commentId));
         comments[index].liked = !comments[index].liked;
         localStorage.setItem('comments', JSON.stringify(comments));
         resolve(true);
-    });
+    })
+    .then( // какая-то обработка резульатов
+        value => { console.log('ok') },
+        error => { console.log('error: ' + error) }
+    );
 }
 
 //-----------------------------
