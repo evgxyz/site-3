@@ -373,7 +373,7 @@ a {
     }
 
     &__action-link {
-        @include dotted-link(green, red)
+        @include dotted-link(red, $color-2) 
     }
 }
 
