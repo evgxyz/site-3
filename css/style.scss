@@ -55,12 +55,30 @@ h2, .h2 {
 a {
     color: $color-1;
     text-decoration: none;
-    transition: color 0.5s, background-color 0.5s;
+    transition-property: color, background-color;
+    transition-duration: 0.5s;
     
     &:hover {
         color: $color-2;
         text-decoration: underline;
-        transition: color 0.5s, background-color 0.5s;
+        transition-property: color, background-color;
+        transition-duration: 0.5s;
+    }
+}
+
+@mixin dotted-link($color, $color-hover) {
+    color: $color;
+    text-decoration: none;
+    border-bottom: 1px dotted $color;
+    transition-property: color, border-bottom;
+    transition-duration: 0.5s;
+    
+    &:hover {
+        color: $color-hover;
+        text-decoration: none;
+        border-bottom: 1px dotted $color-hover; 
+        transition-property: color, border-bottom;
+        transition-duration: 0.5s;
     }
 }
 
@@ -148,12 +166,6 @@ a {
         font-weight: bold;
     }
 }
-
-// .feedback {
-//     display: flex;
-//     align-items: center;
-//     &__button { margin-left: 16px; }
-// }
 
 // основное меню в шапке
 .main-menu {
@@ -361,7 +373,7 @@ a {
     }
 
     &__action-link {
-        color: green; 
+        @include dotted-link(green, red)
     }
 }
 
