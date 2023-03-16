@@ -15,7 +15,7 @@ function initComments() {
     let commentForm = document.getElementById('comment-form');
     // отпрака формы
     commentForm.addEventListener('submit', commentFormSubmit);
-    commentForm.text.addEventListener('keydown', commentFormTextKeydown);
+    commentForm.addEventListener('keydown', commentFormKeydown);
     // ввод на форме
     commentForm.addEventListener('input', commentFormInput);
     // лайк, удалить
@@ -30,26 +30,26 @@ function initComments() {
 // Отправка формы по событию submit
 function commentFormSubmit(event) {
     let form = event.currentTarget;
-    submitCommentForm(form);
     event.preventDefault(); 
+    submitCommentForm(form);
 }
 
 //-----------------------------
 // Отправка формы по событию keydown
-function commentFormTextKeydown(event) {
-    let form = event.currentTarget.form;
+function commentFormKeydown(event) {
+    let form = event.currentTarget;
     if (event.code == 'Enter' && (event.ctrlKey || event.shiftKey)) {
-        submitCommentForm(form);
         event.preventDefault(); 
+        submitCommentForm(form);
     }
 }
 
 //-----------------------------
 // Отправка формы добавления сообщения
 function submitCommentForm(form) {
-    
+    // валидацич полей
     let valid = true;
-
+    // имя
     let name = form.name.value.trim();
     {
         let errorStr = '';
@@ -68,7 +68,7 @@ function submitCommentForm(form) {
             form.querySelector('[name="name-msgerror"]').innerHTML = errorStr;
         }
     }
-
+    // текст
     let text = form.text.value.trim();
     {
         let errorStr = '';
@@ -82,7 +82,7 @@ function submitCommentForm(form) {
             form.querySelector('[name="text-msgerror"]').innerHTML = errorStr;
         }
     }
-
+    // дата
     let date = null;
     {
         let dateStr = form.date.value.trim();
@@ -107,6 +107,7 @@ function submitCommentForm(form) {
 
     if (!valid) return;
     
+    // добавляем комментарий
     let now = (new Date()).getTime();
     let id = now + '-' + randomInt(1000000, 9999999); // уникальный id сообщения
     if (!date) date = now; // если дата пустая, стаим текущую
@@ -116,8 +117,8 @@ function submitCommentForm(form) {
         name: name,
         text: text,
         date: date,
-        liked: false,
-        deleted: false,
+        liked: false, 
+        deleted: false, // помеченные к удалению сообщения должны удаляться на бэкенде
     };
 
     addComment(comment);
@@ -204,6 +205,7 @@ function printComments() {
     let getCommentsFromServer = new Promise((resolve, reject) => {
         let comments = (JSON.parse(localStorage.getItem('comments')) ?? [])
             .filter(x => !x.deleted); // фильтруем удаленные комментарии
+        localStorage.setItem('comments', JSON.stringify(comments));
         resolve(comments);
     });
 
@@ -244,8 +246,8 @@ function commentToHTML(comment) {
 // Добавление комментария
 function addComment(comment) {
     // добавляем комментарий на страницу
-    let commentsBox = document.getElementById('comments-box');
-    commentsBox.insertAdjacentHTML('afterbegin', commentToHTML(comment));
+    document.getElementById('comments-box')
+        .insertAdjacentHTML('afterbegin', commentToHTML(comment));
 
     // добавляем комментарий в хранилище. оформлено асинхронно для имитации взаимодействия с сервером
     let addCommentToServer = new Promise((resolve, reject) => {
@@ -256,8 +258,8 @@ function addComment(comment) {
     });
 
     addCommentToServer.then( // какая-то обработка резульатов
-        value => { console.log('ok') },
-        error => { console.log('error: ' + error) }
+        value => { console.log('add ok') },
+        error => { console.log('add error: ' + error) }
     );
 }
 
@@ -280,8 +282,8 @@ function likeComment(commentId) {
     });
     
     likeCommentToServer.then( // какая-то обработка резульатов
-        value => { console.log('ok') },
-        error => { console.log('error: ' + error) }
+        value => { console.log('like ok') },
+        error => { console.log('like error: ' + error) }
     );
 }
 
@@ -292,9 +294,9 @@ function delComment(commentId) {
     let commentElem = document.getElementById('comments-box')
         .querySelector(`[data-comment-id="${commentId}"]`);
     // скрываем содержимое комментария
-    commentElem.querySelector(`.comment__content`).classList.add('hidden');
+    commentElem?.querySelector(`.comment__content`).classList.add('hidden');
     // добавляем кнопку "восснаовить"
-    commentElem.insertAdjacentHTML('beforeend',
+    commentElem?.insertAdjacentHTML('beforeend',
         `<div data-action="undel"><a href="#" class="comment__action-link">Восстановить</a></div>`);
 
     // удаляем комментарий из хранилища. оформлено асинхронно для имитации взаимодействия с сервером
@@ -318,9 +320,9 @@ function undelComment(commentId) {
     let commentElem = document.getElementById('comments-box')
         .querySelector(`[data-comment-id="${commentId}"]`);
     // показываем скрытое содержимое комментария
-    commentElem.querySelector(`.comment__content`).classList.remove('hidden');
+    commentElem?.querySelector(`.comment__content`).classList.remove('hidden');
     // удаляем кнопку "восснаовить"
-    commentElem.querySelector('[data-action="undel"]')?.remove();
+    commentElem?.querySelector('[data-action="undel"]')?.remove();
 
     // восстанавливаем комментарий в хранилище. оформлено асинхронно для имитации взаимодействия с сервером
     let undelCommentFromServer = new Promise((resolve, reject) => {
