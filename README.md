@@ -1,6 +1,6 @@
 # Блок с комментариями
 
-<a href="https://evgxyz.github.io/site-3" target="_blank">https://evgxyz.github.io/site-3</a>
+<https://evgxyz.github.io/site-3>
 
 Для текстового поля показывается количество оставшихся символов. Форма отправляется при нажатии Ctrl+Enter или Shift+Enter.
 
