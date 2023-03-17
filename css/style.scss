@@ -82,12 +82,22 @@ a {
     }
 }
 
+// обертка, растягивающаяся по ширине содержимого
+#page-wrapper {
+    display: table;
+    margin: 0 auto;
+    width: 100%;
+    max-width: $content-max-width;
+    min-width: $content-min-width;
+    //@include debug-border(red);  
+}
+
 // обертка флекс-колонка для опускания футера к низу страницы в случае маленькой высоты контента
-.page-wrapper {
+#page-content {
     display: flex;
     min-height: 100vh;
-    min-width: $content-min-width;
     flex-direction: column;
+    //@include debug-border(green); 
 }
 
 // шапка
